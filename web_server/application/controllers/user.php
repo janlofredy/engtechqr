@@ -7,4 +7,12 @@ class User extends CI_Controller {
 	{
 		$this->load->view('welcome_message');
 	}
+
+	public function qrLog() {
+		echo json_encode(['result'=>'AMAZING']);
+	}
+
+	public function qr_log() {
+		echo json_encode(['result'=>rand(0,199)]);
+	}
 }
