@@ -2,18 +2,48 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'dart:convert';
+import 'dart:io' as Io;
 
-String resp;
-String establishmentID;
+String serverURL = 'https://a4133d48682c.ngrok.io';
+String getUserURL = serverURL + '/engtechqr/web_server/web_api/getIndividual';
+String getEstablishmentURL = serverURL + '/engtechqr/web_server/web_api/getEstablishment';
+String logUserURL = serverURL + '/engtechqr/web_server/web_api/qrLog';
+String imageURL = serverURL + '/engtechqr/web_server/imageUploads/';
+
+String establishmentQRID = '';
+String guestQRID = '';
 
 void main() {
   runApp(MyApp());
 }
 
 Future<String> justTesting() async{
-  final insideLink = await http.get('https://9d80133ba4e2.ngrok.io/engtechqr/web_server/user/qr_log');
+  final insideLink = await http.get(serverURL);
   print(insideLink.body);
   return insideLink.body;
+  // POST EXAMPLE
+  // var headers = {'Content-Type': 'application/json'};
+  // var body = {'estQR':establishmentQRID,'guestQR':guestQRID};
+  // var postRes = await http.post('',headers:headers,body:body);
+  // String postRes =(await http.post(logUser,body:body)).body;
+  // return postRes;
+}
+
+Future<String> getUser(userQR) async{
+  return (await http.post(getUserURL,body:{'qrInfo':userQR})).body;
+}
+
+Future<String> getEstablishment(userQR) async{
+  return (await http.post(getEstablishmentURL,body:{'qrInfo':userQR})).body;
+}
+
+Future<String> logUser(String estQR,String guestQR) async{
+  // var headers = {'Content-Type': 'application/json'};
+  var body = {'qrInfoEst':estQR,'qrInfoInd':guestQR};
+  // var postRes = await http.post('',headers:headers,body:body);
+  String postRes =(await http.post(logUserURL,body:body)).body;
+  return postRes;
 }
 
 class MyApp extends StatelessWidget {
@@ -21,7 +51,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Guest Log Prototype',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -34,7 +64,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'EngTech Global Solutions QR Code Guest Log Prototype'),
     );
   }
 }
@@ -58,9 +88,24 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String _counter = '0';
-  String _scanBarcode = '';
+  String _establishmentQR = '';
   String _establishmentName = 'No Establishment Set';
+  String _guestName = '';
+  String _guestDOB = '';
+  String _guestNum = '';
+  String _guestCompleteAddress = '';
+  Container _nice;
+
+  Container newImageFromLink(String url){
+    return Container(
+      width: 250,
+      height: 250,
+      child: Image.network(url),
+    );
+  }
+  submitQRLog()  {
+    logUser(establishmentQRID,guestQRID);
+  }
 
   Future scanGuest() async {
     String barcodeScanRes;
@@ -69,8 +114,18 @@ class _MyHomePageState extends State<MyHomePage> {
         "#ff6666", "Cancel", true, ScanMode.QR);
     print(barcodeScanRes);
 
+    Map<String, dynamic> linkRes = jsonDecode( await getUser(barcodeScanRes) );
+
+    guestQRID = barcodeScanRes;
+    print(linkRes['face_image']);
+    Container WOW = await newImageFromLink(linkRes['face_image']??'');
+
     setState(() {
-      _scanBarcode = barcodeScanRes;
+      _guestName = linkRes['first_name']+linkRes['middle_name']+linkRes['last_name']??'Not Found';
+      _guestDOB = linkRes['date_of_birth']??'Not Found';
+      _guestNum = linkRes['mobile_number']??'Not Found';
+      _guestCompleteAddress = linkRes['country']??'Not Found';
+      _nice = WOW;
     });
   }
 
@@ -81,26 +136,15 @@ class _MyHomePageState extends State<MyHomePage> {
         "#ff6666", "Cancel", true, ScanMode.QR);
     print(barcodeScanRes);
 
+    Map<String, dynamic> linkRes = jsonDecode( await getEstablishment(barcodeScanRes) );
+
+    establishmentQRID = barcodeScanRes;
+
     setState(() {
-      _establishmentName = barcodeScanRes;
+      _establishmentName = linkRes['establishment_name']??'Not Found';
     });
   }
 
-  void _incrementCounter() async{
-    String vl = '0';
-    vl = await justTesting();
-    // justTesting().then((value){
-    //   vl = value;
-    // });
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter = vl;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -136,12 +180,67 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Container(
+              margin: EdgeInsets.all(25),
+              child: ElevatedButton(
+                child: Text('New Guest', style: TextStyle(fontSize: 20.0),),
+                onPressed: (){
+                  scanGuest();
+                },
+              ),
+            ),
             Text(
               '$_establishmentName' ?? 'No Establishment',
             ),
             Text(
-              '$_scanBarcode' ?? "Couldn't Load Value",
+              '$_guestName' ?? "Couldn't Load Value",
               style: Theme.of(context).textTheme.headline4,
+            ),
+            Text(
+              '$_guestDOB' ?? "Couldn't Load Value",
+              style: Theme.of(context).textTheme.headline4,
+            ),
+            Text(
+              '$_guestNum' ?? "Couldn't Load Value",
+              style: Theme.of(context).textTheme.headline4,
+            ),
+            Text(
+              '$_guestCompleteAddress' ?? "Couldn't Load Value",
+              style: Theme.of(context).textTheme.headline4,
+            ),
+            _nice = newImageFromLink('https://vectorified.com/images/no-profile-picture-icon-24.jpg'),
+            Container(
+              margin: EdgeInsets.all(25),
+              child: ElevatedButton(
+                child: Text('Accept', style: TextStyle(fontSize: 20.0),),
+                onPressed: (){
+                  submitQRLog();
+                  guestQRID = '';
+                  setState((){
+                    _guestName = '';
+                    _guestDOB = '';
+                    _guestNum = '';
+                    _guestCompleteAddress = '';
+                    _nice = newImageFromLink('https://vectorified.com/images/no-profile-picture-icon-24.jpg');
+                  });
+                },
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.all(25),
+              child: ElevatedButton(
+                child: Text('Cancel'),
+                onPressed: () {
+                  guestQRID = '';
+                  setState((){
+                    _guestName = '';
+                    _guestDOB = '';
+                    _guestNum = '';
+                    _guestCompleteAddress = '';
+                    _nice = newImageFromLink('https://vectorified.com/images/no-profile-picture-icon-24.jpg');
+                  });
+                },
+              ),
             ),
           ],
         ),
@@ -186,18 +285,11 @@ class _MyHomePageState extends State<MyHomePage> {
         // childMarginTop: 2,
         children: [
           SpeedDialChild(
-            child: Icon(Icons.accessibility),
-            backgroundColor: Colors.red,
+            child: Icon(Icons.add_business),
+            backgroundColor: Colors.blue,
             label: 'Set Establishment',
             labelStyle: TextStyle(fontSize: 18.0),
             onTap: () => scanEstablishment(),
-          ),
-          SpeedDialChild(
-            child: Icon(Icons.brush),
-            backgroundColor: Colors.blue,
-            label: 'Scan Guest',
-            labelStyle: TextStyle(fontSize: 18.0),
-            onTap: () => scanGuest(),
           ),
         ],
 

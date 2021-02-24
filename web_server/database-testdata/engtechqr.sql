@@ -11,7 +11,7 @@
  Target Server Version : 100411
  File Encoding         : 65001
 
- Date: 16/02/2021 15:09:42
+ Date: 19/02/2021 09:02:53
 */
 
 SET NAMES utf8mb4;
@@ -23,7 +23,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `establishment_info`;
 CREATE TABLE `establishment_info`  (
   `establishment_id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NULL DEFAULT NULL,
+  `user_id` int(11) NOT NULL,
   `establishment_name` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `establishment_type` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `country` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
@@ -37,14 +37,18 @@ CREATE TABLE `establishment_info`  (
   `contact_mobile_number` varchar(15) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `contact_email` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `qr_info` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  `date_created` datetime(0) NULL DEFAULT NULL,
+  `date_updated` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`establishment_id`) USING BTREE,
+  UNIQUE INDEX `qr_info`(`qr_info`) USING BTREE,
   INDEX `establishment_info_ibfk_1`(`user_id`) USING BTREE,
   CONSTRAINT `establishment_info_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of establishment_info
 -- ----------------------------
+INSERT INTO `establishment_info` VALUES (1, 2, 'ENGTECH', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'b7c59c55c3b761a', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for individual_info
@@ -71,7 +75,10 @@ CREATE TABLE `individual_info`  (
   `id_image` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `face_id_image` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `qr_info` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  `date_created` datetime(0) NULL DEFAULT NULL,
+  `date_updated` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`individual_id`) USING BTREE,
+  UNIQUE INDEX `qr_info`(`qr_info`) USING BTREE,
   INDEX `individual_info_ibfk_1`(`user_id`) USING BTREE,
   CONSTRAINT `individual_info_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
@@ -90,6 +97,8 @@ CREATE TABLE `logs`  (
   `individual_id` int(11) NOT NULL,
   `time_in` datetime(0) NULL DEFAULT NULL,
   `time_out` datetime(0) NULL DEFAULT NULL,
+  `date_created` datetime(0) NULL DEFAULT NULL,
+  `date_updated` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`log_id`) USING BTREE,
   INDEX `establishment_id`(`establishment_id`) USING BTREE,
   INDEX `individual_id`(`individual_id`) USING BTREE,
@@ -111,6 +120,8 @@ CREATE TABLE `otp`  (
   `otp` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `time` timestamp(0) NULL DEFAULT NULL,
   `tries` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  `date_created` datetime(0) NULL DEFAULT NULL,
+  `date_updated` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`otp_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
@@ -127,14 +138,39 @@ CREATE TABLE `users`  (
   `username` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `password` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `user_type` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `is_temp_pass` int(1) NULL DEFAULT NULL,
+  `is_not_temp_pass` int(1) NULL DEFAULT NULL,
+  `date_created` datetime(0) NULL DEFAULT NULL,
+  `date_updated` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`user_id`) USING BTREE,
   UNIQUE INDEX `username`(`username`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES (1, 'admin', 'admin', 'Admin', NULL);
+INSERT INTO `users` VALUES (1, 'admin', 'admin', 'Admin', 1, NULL, NULL);
+INSERT INTO `users` VALUES (2, 'engtech', 'engtech', 'establishment', 1, NULL, NULL);
+
+-- ----------------------------
+-- Triggers structure for table establishment_info
+-- ----------------------------
+DROP TRIGGER IF EXISTS `makeQR`;
+delimiter ;;
+CREATE TRIGGER `makeQR` BEFORE INSERT ON `establishment_info` FOR EACH ROW IF NEW.`qr_info` IS NULL THEN SET NEW.`qr_info` = LEFT(md5(UUID_SHORT()),15);
+
+END IF
+;;
+delimiter ;
+
+-- ----------------------------
+-- Triggers structure for table individual_info
+-- ----------------------------
+DROP TRIGGER IF EXISTS `makeQRIndiv`;
+delimiter ;;
+CREATE TRIGGER `makeQRIndiv` BEFORE INSERT ON `individual_info` FOR EACH ROW IF NEW.`qr_info` IS NULL THEN SET NEW.`qr_info` = LEFT(md5(UUID_SHORT()),15);
+
+END IF
+;;
+delimiter ;
 
 SET FOREIGN_KEY_CHECKS = 1;

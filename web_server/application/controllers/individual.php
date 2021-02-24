@@ -1,10 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Establishment extends MY_Controller {
+class Individual extends MY_Controller {
 
-	const cont = 'Establishment';
-
+	const cont = 'Individual';
 
 	public function index()
 	{
@@ -14,7 +13,7 @@ class Establishment extends MY_Controller {
 		$this->load->view('view_user',['qr'=>$QR]);
 		$this->load->view('template/footer');
 		// echo '<center><pre>';
-		// print_r( array_values($this->session->userdata()) );
+		// print_r( ($this->session->userdata()) );
 		// echo '</pre></center>';
 	}
 
@@ -22,5 +21,6 @@ class Establishment extends MY_Controller {
 		$this->input->post('user_id');
 		echo json_encode(['result'=>'AMAZING']);
 	}
-	
+
+
 }
