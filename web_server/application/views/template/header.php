@@ -2,7 +2,7 @@
 <html>
 <head>
 	<title><?= defined('HEADER_TITLE') ? HEADER_TITLE : "EngTech QR" ?></title>
-	<link rel="shortcut icon" href="<?= base_url()?>" type="image/png" sizes="16x16">
+	<!-- <link rel="shortcut icon" href="<?= base_url()?>public/images/logo-icon.png" type="image/png" sizes="16x16"> -->
 	<link rel="stylesheet" type="text/css" href="<?=base_url('plugins/bootstrap4/css/bootstrap.min.css')?>">
 	<script type="text/javascript"></script>
 </head>

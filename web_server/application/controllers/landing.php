@@ -40,12 +40,12 @@ class Landing extends MY_Controller {
 	public function index()	{
 		// echo $this::cont;
 		$modal['content'] = '<center>
-		    <a href="<?=base_url($controller)/loginUser?>" type="button" class="btn btn-primary">Login as User</a>
-		    <br>
-		    <a href="<?=base_url($controller)/loginEstablishment?>" type="button" class="btn btn-primary">Login as Establishment</a>
+		    <a href="<?=base_url($controller.\'/\')?>" type="button" class="btn btn-primary">Login as User</a>
+		    <br><br>
+		    <a href="<?=base_url($controller.\'/\')?>" type="button" class="btn btn-primary">Login as Establishment</a>
 		<center>';
 		set_modal_title('Login As');
-		set_modal_content
+		set_modal_content($modal);
 		$this->load->view('template/header',['controller'=>$this::cont]);
 		$this->load->view('template/addons/modal',$modal);
 		$this->load->view('welcome_message');

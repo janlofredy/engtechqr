@@ -9,7 +9,11 @@
       </div>
       <div class="modal-body">
         <div class="container-fluid">
-          <?= defined('MODAL_CONTENT') ? MODAL_CONTENT : "EngTech QR Modal" ?>
+          <center>
+          <a href="<?=base_url($controller.'/loginUser')?>" type="button" class="btn btn-danger">Login As Individual</a>
+          <br>
+          <a href="<?=base_url($controller.'/loginEstablishment')?>" type="button" class="btn btn-danger">Login As Establishment</a>
+        </center>
         </div>
       </div>
     </div>

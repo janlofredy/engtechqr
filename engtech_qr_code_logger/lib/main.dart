@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -5,7 +7,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'dart:convert';
 import 'dart:io' as Io;
 
-String serverURL = 'https://a4133d48682c.ngrok.io';
+String serverURL = 'https://4637cba135b9.ngrok.io';
 String getUserURL = serverURL + '/engtechqr/web_server/web_api/getIndividual';
 String getEstablishmentURL = serverURL + '/engtechqr/web_server/web_api/getEstablishment';
 String logUserURL = serverURL + '/engtechqr/web_server/web_api/qrLog';
@@ -88,7 +90,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String _establishmentQR = '';
   String _establishmentName = 'No Establishment Set';
   String _guestName = '';
   String _guestDOB = '';
@@ -96,13 +97,20 @@ class _MyHomePageState extends State<MyHomePage> {
   String _guestCompleteAddress = '';
   Container _nice;
 
-  Container newImageFromLink(String url){
-    return Container(
+
+  Container newImageFromLink(String url) {
+
+    Image myImage = Image.network(url);
+
+    precacheImage(myImage.image, context);
+     Container imageCont =  Container(
       width: 250,
       height: 250,
-      child: Image.network(url),
-    );
+      child: myImage,
+     );
+     return imageCont;
   }
+
   submitQRLog()  {
     logUser(establishmentQRID,guestQRID);
   }
@@ -117,15 +125,14 @@ class _MyHomePageState extends State<MyHomePage> {
     Map<String, dynamic> linkRes = jsonDecode( await getUser(barcodeScanRes) );
 
     guestQRID = barcodeScanRes;
-    print(linkRes['face_image']);
-    Container WOW = await newImageFromLink(linkRes['face_image']??'');
-
+    String asd = imageURL+linkRes['qr_info']+'-faceImage.jpg';
+    print(asd);
     setState(() {
-      _guestName = linkRes['first_name']+linkRes['middle_name']+linkRes['last_name']??'Not Found';
+      _guestName = linkRes['first_name']+' '+linkRes['middle_name']+' '+linkRes['last_name']??'Not Found';
       _guestDOB = linkRes['date_of_birth']??'Not Found';
       _guestNum = linkRes['mobile_number']??'Not Found';
       _guestCompleteAddress = linkRes['country']??'Not Found';
-      _nice = WOW;
+      _nice = newImageFromLink(asd);
     });
   }
 
