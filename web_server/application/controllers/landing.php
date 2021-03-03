@@ -46,11 +46,12 @@ class Landing extends MY_Controller {
 		<center>';
 		set_modal_title('Login As');
 		set_modal_content($modal);
-		$this->load->view('template/header',['controller'=>$this::cont]);
-		$this->load->view('template/addons/modal',$modal);
-		$this->load->view('welcome_message');
-		$this->load->view('template/footer');
+		// $this->load->view('template/header',['controller'=>$this::cont]);
+		// $this->load->view('template/addons/modal',$modal);
+		// $this->load->view('welcome_message');
+		// $this->load->view('template/footer');
 		// $this->generateQr('070af40e1d89179');
+		$this->load->view('home');
 	}
 
 	public function create_user(){

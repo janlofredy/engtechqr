@@ -1,15 +1,16 @@
 
+<label for="set_establishment_qr">Set Establishment</label>
+<input type="file" id="set_establishment_qr" accept="image/*" capture>
 
-<script src="<?=base_url('plugins/qr-scanner/html5-qrcode.js')?>"></script>
-
-<input type="file" id="qr-input-file" accept="image/*" capture>
+<!-- <input type="file" id="New Guest" accept="image/*" capture> -->
 
 <div id="reader" ></div>
 
 <script type="text/javascript">
-const html5QrCode = new Html5Qrcode(/* element id */ "reader");
+const html5QrCode = new Html5Qrcode("reader");
 // File based scanning
-const fileinput = document.getElementById('qr-input-file');
+const fileinput = document.getElementById('set_establishment_qr');
+
 fileinput.addEventListener('change', e => {
   if (e.target.files.length == 0) {
     // No file selected, ignore 
@@ -22,6 +23,20 @@ fileinput.addEventListener('change', e => {
   .then(qrCodeMessage => {
     // success, use qrCodeMessage
     alert(qrCodeMessage);
+    $.ajax({
+    	url: '<?=base_url('web_api/getEstablishment')?>',
+    	type: 'POST',
+    	dataType: 'json',
+    	data: {qrInfo: qrCodeMessage},
+    })
+    .done(data => {
+    	console.log(data);
+    })
+    .fail(function() {
+    	console.log("error");
+    });
+    
+
   })
   .catch(err => {
     // failure, handle it.

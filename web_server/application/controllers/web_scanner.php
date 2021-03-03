@@ -4,9 +4,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Web_scanner extends CI_Controller {
 
 	const cont = 'Web_scanner';
+	
+	public function __construct(){
+		parent::__construct();
+		$this->load->library('session');
+		$this->load->helper('url');
+  		$this->load->library('phpqrcode/qrlib');
+	}
 
 	public function index()	{
+		$this->load->view('template/header_no_login');
 		$this->load->view('scanQR');
+		$this->load->view('template/footer_no_login');
 	}
 
 	public function qrLog() {
