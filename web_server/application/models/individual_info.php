@@ -53,4 +53,10 @@ class Individual_info extends MY_Model {
 			->row_array();
 	}
 	
+	public function getByEmail($email){
+		return $this->db->where('email_address',$email)
+			->select('*')
+			->get($this::DB_TABLE)
+			->row();
+	}
 }

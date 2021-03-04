@@ -4,7 +4,8 @@
 	<title><?= defined('HEADER_TITLE') ? HEADER_TITLE : "EngTech QR" ?></title>
 	<!-- <link rel="shortcut icon" href="<?= base_url()?>public/images/logo-icon.png" type="image/png" sizes="16x16"> -->
 	<link rel="stylesheet" type="text/css" href="<?=base_url('plugins/bootstrap4/css/bootstrap.min.css')?>">
-	<script type="text/javascript"></script>
+	
+	<script type="text/javascript" src="<?=base_url('plugins/jquery/jquery.min.js')?>"></script>
 </head>
 <body>
 	<div class="container-fluid">
