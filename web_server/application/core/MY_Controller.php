@@ -3,9 +3,11 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class MY_Controller extends CI_Controller {
 	const cont = 'DEFAULT';
+	
 	public function __construct(){
 		parent::__construct();
   		$this->load->library('phpqrcode/qrlib');
+  		$this->load->library('encrypt');
 		$this->init();
 	}
 
@@ -56,6 +58,21 @@ class MY_Controller extends CI_Controller {
 	public function logout(){
 		$this->session->sess_destroy();
 		redirect('landing');
+	}
+
+	public function sendEmail($from,$fromName,$to,$subject,$content){
+		$this->load->library('email');
+
+		$this->email->mailtype = 'html';
+		$this->email->from($from, $fromName);
+		$this->email->to($to);
+		// $this->email->cc('another@another-example.com');
+		// $this->email->bcc('them@their-example.com');
+
+		$this->email->subject($subject);
+		$this->email->message($content);
+
+		return $this->email->send();
 	}
 
 }

@@ -17,8 +17,16 @@
 		</div>
 		<div class="row">
 			<div class="col" style="margin-top:40px">
-				<img src="<?=base_url();?>/assets/image/register.png" class="img-fluid">
-				<h3>REGISTER</h3>
+				<a href="<?=base_url('landing/create_user')?>">
+					<img src="<?=base_url();?>/assets/image/register.png" class="img-fluid">
+					<h3>REGISTER</h3>
+				</a>
+			</div>
+			<div class="col" style="margin-top:40px">
+				<a href="<?=base_url('landing/login_user')?>">
+					<img src="<?=base_url();?>/assets/image/register.png" class="img-fluid">
+					<h3>Login</h3>
+				</a>
 			</div>
 		</div>
 		<div class="row">
