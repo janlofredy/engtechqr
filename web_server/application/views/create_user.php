@@ -32,7 +32,8 @@
 <br>
 <div class="card" style="border-radius:0px;">
   <div class="card-body" style="color:#7d7d7d;">
-		<form class="form-horizontal" action="<?=base_url('landing/createUser')?>" method="POST">
+		<!-- <form class="form-horizontal" action="<?=base_url('landing/createUser')?>" method="POST"> -->
+		<form class="form-horizontal" action="#" method="POST">
 			<fieldset>
 				<div id="basic_info">
 					<div class="row" style="color:#0a3663;">
@@ -101,6 +102,8 @@
 								<!-- Text input-->
 								<div class="form-group">
 									<label class="control-label" for="mobile_number">Mobile Number</label>
+									<!-- <input id="mobile_number" name="mobile_number" type="text" placeholder="Mobile Number" maxlength="11" class="form-control input-md"
+									onchange="$('input[name=otp_mobille_number]').val($(this).val());"> -->
 									<input id="mobile_number" name="mobile_number" type="text" placeholder="Mobile Number" maxlength="11" class="form-control input-md">
 								</div>
 							</div>
@@ -108,7 +111,8 @@
 								<!-- Text input-->
 								<div class="form-group">
 									<label class="control-label" for="email_address">Email Address</label>
-									<input id="email_address" name="email_address" type="email" placeholder="Email Address" class="form-control input-md email">
+									<input id="email_address" name="email_address" type="email" placeholder="Email Address" class="form-control input-md email"
+									onchange="$('input[name=otp_email]').val($(this).val());">
 								</div>
 							</div>
 						</div>
@@ -233,7 +237,7 @@
 					<div id="div_btn_next_attatchments" class="d-none">
 						<div class="row">
 							<div class="col">
-								<a id="attatchments_btn" onclick="$('#generate').removeAttr('class'); $('#attatchments').attr('class','d-none');" class="disabled btn btn-primary text-white float-right"
+								<a id="attatchments_btn" onclick="$('#activation').removeAttr('class'); $('#attatchments').attr('class','d-none');" class="disabled btn btn-primary text-white float-right"
 								style="
 								background-color: #074886;
 								width: 115px;
@@ -246,7 +250,7 @@
 						</div>
 					</div>
 				</div>
-				<div id="generate" class="d-none">
+				<div id="activation" class="d-none">
 					<div class="container">
 						<div class="row" style="color:#0a3663;">
 							<div class="col">
@@ -257,17 +261,44 @@
 						<div class="row">
 							<center>
 								<div class="col">
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt
-										 ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-										 laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in vo
-										 luptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat no
-										 n proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+										<div class="row">
+											<!-- <div class="col col-md-6 offset-md-3">
+													<p>We will send 6-digit One-Time Passwords (OTP) via SMS text message for Verification.
+														Please make sure that your mobile number below is correct.</p>
+											</div> -->
+											<div class="col col-md-6 offset-md-3">
+													<p>We will send 6-digit One-Time Passwords (OTP) via Email for Verification.
+														Please make sure that your Email Address below is correct.</p>
+											</div>
+										</div>
+									<!-- <div class="row">
+										<div class="col col-md-4 offset-md-4">
+											<h6><b>Mobile Number</b></h6>
+											<div class="input-group">
+												<input class="form-control" type="text" name="otp_mobille_number" style="" maxlength="11"><a style="color:#074886;cursor:pointer;" onclick="alert('');">
+												<div class="input-group-append">
+													<span class="input-group-text" id="basic-addon1"><i id="nav_btn_icon" class="fa fa-edit"></i>&nbsp;Edit</a></span>
+												</div>
+											</div>
+										</div>
+									</div> -->
 									<br>
-									<h6><b>Mobile Number:</b> <input type="text" name="otp_mobille_number" value="09112234542" style="border:0px;width:105px;" maxlength="11"><a type="button" class="btn"  style="color:#074886;"><i id="nav_btn_icon" class="fa fa-edit"></i> Edit</a> </h6>
-									<p>you must something..................</p>
+									<div class="row">
+										<div class="col col-md-4 offset-md-4">
+											<h6><b>Email Address</b></h6>
+											<div class="input-group">
+												<input class="form-control" type="text" name="otp_email" style="">
+												<div class="input-group-append">
+													<span class="input-group-text" id="basic-addon1"><a style="color:#074886;cursor:pointer;" onclick="alert('success');"><i id="nav_btn_icon" class="fa fa-edit"></i>&nbsp;Edit</a></span>
+												</div>
+											</div>
+										</div>
+									</div>
 									<div id="div_btn_send_otp" class="float-center">
 										<div class="row">
 											<div class="col">
+												<br>
+												<p>you must click this button to receive your OTP</p>
 												<a id="btn_send_otp" onclick="alert('Success');" class="btn btn-primary btn-sm text-white"
 												style="
 												background-color: #074886;
@@ -279,15 +310,18 @@
 											</div>
 										</div>
 										<div class="row">
-											<div class="col-4 offset-4">
-												<br>
-												<input type="text" name="otp" value="" placeholder="One Time Password(SMS)" class="form-control text-center">
-												<small>One Time Password via SMS</small>
+											<div class="col col-md-4 offset-md-4">
+												<div class="container">
+													<br>
+													<input type="text" name="otp" placeholder="One Time Password(SMS)" class="form-control text-center">
+													<small>One Time Password via SMS</small>
+												</div>
 											</div>
 										</div>
 										<div class="row">
 											<div class="col">
-												<input type="Submit" class="btn btn-success float-center" value="SUBMIT">
+												<!-- <input type="Submit" class="btn btn-success float-center" value="SUBMIT"> -->
+												<input type="button" class="btn btn-success float-center" value="SUBMIT" onclick="$('#qrcode').removeAttr('class');$('#activation').attr('class','d-none');">
 											</div>
 										</div>
 									</div>
@@ -296,22 +330,8 @@
 						</div>
 					</div>
 				</div>
+				<?php $this->load->view('view_user'); ?>
 			</fieldset>
-			<!-- <div id="submit" class="d-none">
-				<div class="row">
-					<div class="col">
-						<div class="container">
-							<div class="checkbox">
-								<label for="terms">
-									<input type="checkbox" id="terms" value="1" required>
-									I Accept The ENGTECH QR <a href="#">Terms and Services</a>
-								</label>
-							</div>
-							<input type="Submit" class="btn btn-success float-right" value="SUBMIT">
-						</div>
-					</div>
-				</div>
-			</div> -->
 		</form>
 	</div>
 </div>
@@ -382,7 +402,7 @@
 
 <script type="text/javascript">
 	$(document).on('change', 'input', function() {
-		if ($('#first_name').val() && $('#middle_name').val() && $('#last_name').val() && $('#Gender').val()
+		if ($('#first_name').val() && $('#last_name').val() && $('#Gender').val()
 			&& $('#date_of_birth').val() && $('#mobile_number').val() && $('#email_address').val()
 			&& $('#country').val() && $('#province').val() && $('#city_municipality').val() && $('#zip_code').val() && $('#barangay').val() !="") {
 			$('#div_btn_next_basic').removeAttr('class');
@@ -402,9 +422,11 @@
 			$('#attatchments_btn').attr('class', 'disabled btn btn-primary text-white float-right');
 		}
 	});
+	// Add Function Change color of Verification and Generating QR Code
+	
 </script>
 
-<div class="modal fade" id="termsModal">
+<div class="modal fade" id="termsModal" style="margin-top:300px;">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
