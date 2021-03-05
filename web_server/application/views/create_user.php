@@ -188,7 +188,7 @@
 					<div class="row">
 						<div class="col col-md-4 col-lg-4">
 							<center>
-								<div class="card" style="width: 18rem;margin:10px;">
+								<div class="card" style="margin:10px;">
 								  <img id="img_face_image" class="card-img-top" src="<?= base_url() ?>assets/image/blank-image.png" alt="Card image cap">
 								  <div class="card-body">
 								    <h5 class="card-title">Photo of Your Face</h5>
@@ -200,7 +200,7 @@
 						</div>
 						<div class="col col-md-4 col-lg-4">
 							<center>
-								<div class="card" style="width: 18rem;margin:10px;">
+								<div class="card" style="margin:10px;">
 								  <img id="img_id_image" class="card-img-top" src="<?= base_url() ?>assets/image/blank-image.png" alt="Card image cap">
 								  <div class="card-body">
 								    <h5 class="card-title">Photo Of Your Valid ID</h5>
@@ -212,7 +212,7 @@
 						</div>
 						<div class="col col-md-4 col-lg-4">
 							<center>
-								<div class="card" style="width: 18rem;margin:10px;">
+								<div class="card" style="margin:10px;">
 								  <img id="img_face_id_image" class="card-img-top" src="<?= base_url() ?>assets/image/blank-image.png" alt="Card image cap">
 								  <div class="card-body">
 								    <h5 class="card-title" style="font-size:15px; font-weight:bold;">Your Photo Holding Your Valid ID Beside Your Face</h5>
@@ -423,7 +423,7 @@
 		}
 	});
 	// Add Function Change color of Verification and Generating QR Code
-	
+
 </script>
 
 <div class="modal fade" id="termsModal" style="margin-top:300px;">
