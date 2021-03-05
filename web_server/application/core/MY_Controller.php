@@ -1,5 +1,6 @@
 <?php
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+use Twilio\Rest\Client;
 
 class MY_Controller extends CI_Controller {
 	const cont = 'DEFAULT';
@@ -75,4 +76,41 @@ class MY_Controller extends CI_Controller {
 		return $this->email->send();
 	}
 
+
+	public function sendMessageTwilio($toNumber, $message){
+
+		$twilio_number = "+15037447958";
+		$to_num= $toNumber;
+
+		$sid = 'AC3e49f8f5251e540e222d049e01f5ce4e';
+		$token = '879797d03358b96576b07a0bcaec107d';
+		$client = new Client($sid, $token);
+
+		// Use the client to do fun stuff like send text messages!
+		 return $client->messages->create(
+			// the number you'd like to send the message to
+			$to_num,
+			array(
+				// A Twilio phone number you purchased at twilio.com/console
+				"from" => $twilio_number,
+				// the body of the text message you'd like to send
+				'body' => $message
+			)
+		);
+		// Your Account SID and Auth Token from twilio.com/console
+		// Include the bundled autoload from the Twilio PHP Helper Library
+		// require __DIR__ . '/twilio-php-main/src/Twilio/autoload.php';
+		// In production, these should be environment variables. E.g.:
+		// $auth_token = $_ENV["TWILIO_ACCOUNT_SID"]
+		// $client = new Client($account_sid, $auth_token);
+		// $client->messages->create(
+		// 	// Where to send a text message (your cell phone?)
+		// 	'+639127051862',
+		// 	array(
+		// 		'from' => $twilio_number,
+		// 		'body' => 'I sent this message in under 10 minutes!'
+		// 	)
+		// );
+
+	}
 }
