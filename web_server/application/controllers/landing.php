@@ -96,13 +96,33 @@ class Landing extends MY_Controller {
 	}
 
 	public function resendOTPToEmail(){
-		$email = $this->resendOTPToEmail( $this->input->post('email_address') );
+		$this->load->model('individual_info');
+		$qrin = new Individual_info;
+		// $email = $this->sendOTPtoEmail( $this->input->post('email_address') );
+		$user = $qrin->getByEmail($this->input->post('email_address'));
+		// var_dump( $user );
+		if($user){
+			$email = $this->sendOTPtoEmail($user->individual_id,$user->email_address);
+			// echo json_encode($email);
+			// return $email;
+			if($email){
+				$user->result = 'success';
+				echo json_encode($user);
+				return $email;
+			}else{
+				echo json_encode(['result'=>'Failed to Send to Email']);
+				return json_encode(['result'=>'Failed to Send to Email']);
 
-		echo json_encode($email);
+			}
+		}else{
+			echo json_encode(['result'=>'Email Not Found']);
+			return json_encode(['result'=>'Email Not Found']);
+		}
+		// echo json_encode($email);
 	}
 
 	public function resendOTPToMobile(){
-		$num = $this->resendOTPToMobile( $this->input->post('mobile_number') );
+		$num = $this->sendOTPtoMobile( $this->input->post('mobile_number') );
 
 		echo json_encode($num);
 	}
@@ -111,6 +131,8 @@ class Landing extends MY_Controller {
 		$otp = $this->input->post('otp');
 		$userid = $this->input->post('user_id');
 		$this->load->model('otp');
+		$this->load->model('individual_info');
+		$qrin = new Individual_info;
 		$otpMod = new Otp;
 		$res = $otpMod->getOTP($userid, $otp);
 		// echo json_encode($res);
@@ -123,6 +145,10 @@ class Landing extends MY_Controller {
 			if($otp == $res->otp){
 				$otpMod->OTPAccepted($res->otp_id);
 				$result="Success";
+				// $this->session->set_userdata('type','Individual')
+				$this->session->set_userdata($qrin->getOne($userid) );
+				// $this->session->set_userdata('qr_info',  );
+				$this->session->set_userdata('type','Individual');
 			}else{
 				$otpMod->OTPWrong($res->otp_id,($res->tries+1) );
 				$result="Tries remaining: ". (5 - $res->tries);

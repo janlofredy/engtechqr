@@ -103,7 +103,7 @@
 			}else if(data.result == "Failed to Send to Email"){
 				$('#notice').html("Failed To Send Email.")
 			}else{
-				$('#notice').html( "Please Check your Email for your OTP." )
+				$('#notice').html( "Please Check your Email for your OTP." );
 				$('#user_id').val(data.individual_id);
 				$('#email_addr').val(data.email_address);
 				$('#phone_num').val(data.mobile_number);
@@ -132,8 +132,10 @@
 			data: {otp: $('#otp').val(), user_id: $('#user_id').val()},
 		})
 		.done(data => {
-			if(data.length() <= 0){
-				$('#notice').innerHTML = "Email Address Not Found. <a href='<?=base_url('landing/create_user');?>''>Create Account Here</a>"
+			if(data.result=="Success"){
+				location.reload();
+			}else{
+				$('#notice').html( data.result )
 			}
 			console.log(data);
 		})
