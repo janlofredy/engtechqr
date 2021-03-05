@@ -1,5 +1,10 @@
-body {
+body{
+    width: 100%;
     background-image: url( "../assets/image/Home.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
     background-color: #cccccc;
+    font-family: sans-serif;
+    background-attachment: fixed;
   }
-

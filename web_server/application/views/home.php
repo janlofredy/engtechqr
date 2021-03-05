@@ -13,12 +13,14 @@
 		<div class="row">
 			<div class="col" style="margin-top:25px">
 				<img src="<?=base_url();?>/assets/image/home.png" class="img-fluid">
-			</div> 
+			</div>
 		</div>
 		<div class="row">
 			<div class="col" style="margin-top:40px">
-				<img src="<?=base_url();?>/assets/image/register.png" class="img-fluid">
-				<h3>REGISTER</h3>
+				<a href="<?=base_url('landing/create_user')?>">
+					<img src="<?=base_url();?>/assets/image/register.png" class="img-fluid">
+					<h3>REGISTER</h3>
+				</a>
 			</div>
 		</div>
 		<div class="row">
