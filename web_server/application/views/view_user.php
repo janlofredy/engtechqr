@@ -26,7 +26,9 @@
               This is your Personal QR Code ID.
               Please make sure you keep a copy of your ACLC QR ID.
               <br>
-              You may screenshot, save as image, download it as PDF or send it to your email.
+              You may screenshot, save it as image.
+              <br>
+              For you to review your QR Code ID please login using your registered e-mail address.
               <br>
               This is your unique and permanent QR Code (<b id="qrcode"><?php if ( $this->session->userdata('qr_info') != null  ) {
                         echo $this->session->userdata('qr_info');

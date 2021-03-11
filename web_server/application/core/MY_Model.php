@@ -49,7 +49,7 @@ class MY_Model extends CI_Model {
 	}
 
 	public function getBy($where){
-		return $this->db->where($where)
+		return $this->db->where($where) 
 			->select('*')
 			->get($this::DB_TABLE)
 			->row_array();

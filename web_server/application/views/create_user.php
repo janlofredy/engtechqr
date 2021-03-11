@@ -407,7 +407,7 @@
 					$('#activation').removeAttr('class');
 					$('#attatchments').attr('class','d-none');
 					$('.img_upload_photo').attr("src", "<?= base_url() ?>assets/image/done-upload-photo.png");
-					$('#user_idVerify').val(dataRes.data.individual_id);
+					$('#user_idVerify').val(dataRes.data.user_id);
 				}else{
 					alert(dataRes.message);
 				}
@@ -447,6 +447,61 @@
 		})
 		
 	})
+	$('#email_address').on('change',function(){
+		if($('#createuserForm').validate().element('#email_address')){
+			$.ajax({
+				url: '<?=base_url('landing/verifyDuplicate')?>',
+				type: 'POST',
+				dataType: 'json',
+				data: {email_address: $(this).val()},
+			})
+			.done(function(data) {
+				if(data.result){
+					$('#createuserForm').validate().showErrors({
+					  "email_address": "This Email Address is already Used, Please use a different Email Address. or you can login using your email address."
+					});
+					$('#btn_next_basic').addClass('disabled')
+				}else{
+					$('#btn_next_basic').removeClass('disabled')
+				}
+				console.log("success");
+			})
+			.fail(function() {
+				console.log("error");
+			})
+			.always(function() {
+				console.log("complete");
+			});
+		}
+	})
+	$('#mobile_number').on('change',function(){
+		if($('#createuserForm').validate().element('#mobile_number')){
+			$.ajax({
+				url: '<?=base_url('landing/verifyDuplicate')?>',
+				type: 'POST',
+				dataType: 'json',
+				data: {mobile_number: $(this).val()},
+			})
+			.done(function(data) {
+				if(data.result){
+					$('#createuserForm').validate().showErrors({
+					  "mobile_number": "This Mobile Number has already been used"
+					});
+					$('#btn_next_basic').addClass('disabled')
+				}else{
+					$('#btn_next_basic').removeClass('disabled')
+				}
+				console.log("success");
+			})
+			.fail(function() {
+				console.log("error");
+			})
+			.always(function() {
+				console.log("complete");
+			});
+		}
+	})
+
 	// $(document).on('change', 'input', function() {
 	// 	if ($('#first_name').val() && $('#last_name').val() && $('#gender').val()
 	// 		&& $('#date_of_birth').val() && $('#mobile_number').val() && $('#email_address').val()

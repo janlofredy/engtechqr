@@ -21,10 +21,11 @@ class Web_api extends CI_Controller {
 
 		$this->load->model('logs');
 		$log = new Logs;
-		if( $log->logNow($estID,$indID) ){
-			echo json_encode(['result'=>'Success']);	
+		$logged = $log->logNow($estID,$indID);
+		if( $logged ){
+			echo json_encode(['result'=>true,'data'=>$logged]);	
 		}else{
-			echo json_encode(['result'=>'Failed']);
+			echo json_encode(['result'=>false,'data'=>$logged]);
 		}
 	}
 

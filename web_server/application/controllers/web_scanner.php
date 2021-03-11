@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Web_scanner extends CI_Controller {
 
-	const cont = 'Web_scanner';
+	const cont = 'web_scanner';
 	
 	public function __construct(){
 		parent::__construct();
@@ -13,9 +13,9 @@ class Web_scanner extends CI_Controller {
 	}
 
 	public function index()	{
-		$this->load->view('template/header_no_login');
+		$this->load->view('template/header',['controller'=>$this::cont]);
 		$this->load->view('scanQR');
-		$this->load->view('template/footer_no_login');
+		$this->load->view('template/footer');
 	}
 
 	public function qrLog() {

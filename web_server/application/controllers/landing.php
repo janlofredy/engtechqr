@@ -306,4 +306,11 @@ class Landing extends MY_Controller {
 		return $this->input->post();
 	}
 
+	public function verifyDuplicate(){
+		$this->load->model('individual_info');
+		$where = $this->input->post();
+		$id = new Individual_info;
+		echo json_encode(['result'=>$id->getBy($where)]);
+	}
+
 }
