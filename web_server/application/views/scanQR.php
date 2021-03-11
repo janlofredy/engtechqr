@@ -96,7 +96,7 @@
 		html5QrCode.scanFile(imageFile, false)
 		.then(qrCodeMessage => {
 			// success, use qrCodeMessage
-			alert(qrCodeMessage);
+			// alert(qrCodeMessage);
 			$.ajax({
 				url: '<?=base_url('web_api/getEstablishment')?>',
 				type: 'POST',
@@ -121,7 +121,6 @@
 	});
 
 
-	// html5QrCode2 = new Html5Qrcode("reader2");
 	guestFileInp = document.getElementById('newGuest');
 
 	guestFileInp.addEventListener('change', geg => {
@@ -136,7 +135,7 @@
 		html5QrCode.scanFile(imageFile2, false)
 		.then(qrMess => {
 			// success, use qrMess
-			alert(qrMess);
+			// alert(qrMess);
 			$.ajax({
 				url: '<?=base_url('web_api/getIndividual')?>',
 				type: 'POST',
@@ -170,9 +169,13 @@
 			.attr('src', 
 				'<?=base_url();?>'+guestInfo.face_image
 			);
+		$('#guestName')
+			.html(
+				guestInfo.first_name + ' ' + guestInfo.middle_name + " " + guestInfo.last_name
+			);
 		$('#dob')
 			.html(
-				new Date(guestInfo.date_of_birth)
+				formatDate(guestInfo.date_of_birth)
 			);
 		$('#contactN')
 			.html(
@@ -184,10 +187,17 @@
 			);
 		setTimeout(function(){
 			$('#profileImage').attr('src','<?= base_url() ?>assets/image/blank-image.png');
+			$('#guestName').html('');
 			$('#dob').html('');
 			$('#contactN').html('');
 			$('#email').html('');
 		},5000);
 	}
 
+	function formatDate(dated){
+		const months = ["January", "Febeuary", "March","April", "May", "June", "July", "August", "September", "October", "November", "December"];
+		let current_datetime = new Date(dated)
+		let formatted_date = months[current_datetime.getMonth()] + ' ' + current_datetime.getDate() + ", "  + current_datetime.getFullYear()
+		return (formatted_date)
+	}
 </script>
