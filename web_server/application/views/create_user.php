@@ -284,23 +284,25 @@
 									"><i id="nav_btn_icon" class="fa fa-paper-plane"></i> RESEND OTP NOW</a>
 								</div>
 							</div>
-							<div id="div_btn_send_otp" class="float-center">
-								<div class="row">
-									<div class="col col-md-4 offset-md-4">
-										<div class="container">
-											<br>
-											<input type="text" id="otpVerify" name="otp" placeholder="One Time Pin(Email)" class="form-control text-center">
-											<small>One Time Pin via Email</small>
+							<form id="otpVerifyForm">
+								<div id="div_btn_send_otp" class="float-center">
+									<div class="row">
+										<div class="col col-md-4 offset-md-4">
+											<div class="container">
+												<br>
+												<input type="text" id="otpVerify" name="otp" placeholder="One Time Pin(Email)" class="form-control text-center">
+												<small>One Time Pin via Email</small>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col">
+											<!-- <input type="Submit" class="btn btn-success float-center" value="SUBMIT"> -->
+											<input type="button" class="btn btn-success float-center" value="Verify OTP" id="verifyOTPbtn">
 										</div>
 									</div>
 								</div>
-								<div class="row">
-									<div class="col">
-										<!-- <input type="Submit" class="btn btn-success float-center" value="SUBMIT"> -->
-										<input type="button" class="btn btn-success float-center" value="Verify OTP" id="verifyOTPbtn">
-									</div>
-								</div>
-							</div>
+							</form>
 						</div>
 					</center>
 				</div>
@@ -426,11 +428,16 @@
 		.done(function(data) {
 			console.log(data.result);
 			if(data.result == "OTP Expired"){
-				alert(data.result);
+				$('otpVerifyForm').validate().showErrors({'otp':data.result})
+				// alert(data.result);
 			}else if(data.result.includes('Tries remaining')){
-				alert(data.result);
+				$('otpVerifyForm').validate().showErrors({'otp':data.result})
+				// alert(data.result);
 			}else if(data.result == 'success'){
 				location.reload();
+			}else{
+				$('otpVerifyForm').validate().showErrors({'otp':data.result})
+				// alert(data.result);
 			}
 		})
 		
@@ -501,7 +508,9 @@
 			});
 		}
 	})
-
+	$('#otpVerifyForm').on('submit',function(event){
+		event.preventDefault();
+	})
 	// $(document).on('change', 'input', function() {
 	// 	if ($('#first_name').val() && $('#last_name').val() && $('#gender').val()
 	// 		&& $('#date_of_birth').val() && $('#mobile_number').val() && $('#email_address').val()

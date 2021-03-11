@@ -285,7 +285,7 @@ class Landing extends MY_Controller {
 			$qr_info = $qrin->getQRInfo($qrInfo);
 			$this->generateQr($qr_info);
 			$email = $data['email_address'];
-			$num = $this->sendOTPtoEmail( $qrInfo, $email );
+			$num = $this->sendOTPtoEmail( $usrID, $email );
 			// echo($num);
 
 			echo json_encode(['result'=>true,'message'=>'Check your e-mail for your OTP','data'=>$indiv->getOne($qrInfo)]);

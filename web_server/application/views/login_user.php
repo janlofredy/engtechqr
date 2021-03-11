@@ -10,6 +10,9 @@
 					<label class="control-label" for="email_add">Email Address:</label>
 					<input type="email" name="email_address" id="email_add" required>
 				</div>
+				<div id="notice">
+					
+				</div>
 				<div class="form-group">
 					<input type="submit">
 				</div>
@@ -17,9 +20,6 @@
 		</div>
 	</div>
 </form>
-<div id="notice">
-	
-</div>
 <form id="verifyOTP" method="POST" class="form-horizontal" action="<?=base_url('landing/verifyOTP')?> ">
 
 	<div class="row">
