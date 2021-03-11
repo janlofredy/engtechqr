@@ -20,7 +20,7 @@
 					</div>
 				</div>
 			</center>
-			<div id="reader" ></div>
+			<div id="reader"></div>
 		</div>
 		<div>
 			<center>
@@ -33,7 +33,7 @@
 					</div>
 				</div>
 			</center>
-			<div id="reader2" ></div>
+			<div id="reader2"></div>
 		</div>
 	</div>
 
@@ -121,7 +121,7 @@
 	});
 
 
-	html5QrCode2 = new Html5Qrcode("reader2");
+	// html5QrCode2 = new Html5Qrcode("reader2");
 	guestFileInp = document.getElementById('newGuest');
 
 	guestFileInp.addEventListener('change', geg => {
@@ -133,7 +133,7 @@
 
 		imageFile2 = geg.target.files[0];
 		// Scan QR Code
-		html5QrCode2.scanFile(imageFile2, false)
+		html5QrCode.scanFile(imageFile2, false)
 		.then(qrMess => {
 			// success, use qrMess
 			alert(qrMess);
