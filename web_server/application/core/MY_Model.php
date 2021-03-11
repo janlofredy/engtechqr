@@ -47,4 +47,16 @@ class MY_Model extends CI_Model {
 			->get($this::DB_TABLE)
 			->row_array();
 	}
+
+	public function getBy($where){
+		return $this->db->where($where)
+			->select('*')
+			->get($this::DB_TABLE)
+			->row_array();
+	}
+
+	public function updateById($id,$arr){
+		$arr['date_updated'] = date("Y-m-d H:i:s");
+		return $this->db->where($this::DB_TABLE_PK,$id)->set($arr)->update($this::DB_TABLE);
+	}
 }

@@ -52,4 +52,11 @@ class Establishment_info extends MY_Model {
 			->get($this::DB_TABLE)
 			->row_array();
 	}
+	
+	public function getByEmail($email){
+		return $this->db->where('contact_email',$email)
+			->select('*')
+			->get($this::DB_TABLE)
+			->row();
+	}
 }

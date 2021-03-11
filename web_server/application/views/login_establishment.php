@@ -51,7 +51,7 @@
 	$('#sendByMobile').on('click', function(event) {
 		event.preventDefault();
 		$.ajax({
-			url: '<?=base_url('landing/resendOTPToMobile')?>',
+			url: '<?=base_url('landing/resendOTPToMobileEst')?>',
 			type: 'POST',
 			dataType: 'json',
 			data: {mobile_number: $('#phone_num').val()},
@@ -71,7 +71,7 @@
 	$('#sendByEmail').on('click', function(event) {
 		event.preventDefault();
 		$.ajax({
-			url: '<?=base_url('landing/loginUser')?>',
+			url: '<?=base_url('landing/loginEstablishment')?>',
 			type: 'POST',
 			dataType: 'json',
 			data: {email_address: $('#email_addr').val()},
@@ -100,7 +100,7 @@
 	$('#userLogin').on('submit', function(event) {
 		event.preventDefault();
 		$.ajax({
-			url: '<?=base_url('landing/loginUser')?>',
+			url: '<?=base_url('landing/loginEstablishment')?>',
 			type: 'POST',
 			dataType: 'json',
 			data: {email_address: $('#email_add').val()},

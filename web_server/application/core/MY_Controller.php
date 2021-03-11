@@ -9,6 +9,7 @@ class MY_Controller extends CI_Controller {
 		parent::__construct();
   		$this->load->library('phpqrcode/qrlib');
   		$this->load->library('encrypt');
+  		$this->load->library('upload');
 		$this->init();
 	}
 
@@ -59,6 +60,29 @@ class MY_Controller extends CI_Controller {
 	public function logout(){
 		$this->session->sess_destroy();
 		redirect('landing');
+	}
+
+	public function uploadFile($form_name,$file_name,$file_loc){
+		$config['upload_path']          = $file_loc;
+		$config['allowed_types']        = '*';
+		$config['max_size']             = 10240;
+		$config['max_width']            = 0;
+		$config['max_height']           = 0;
+		$config['file_name']			= $file_name;
+		$config['overwrite']			= false;
+
+		$this->upload->initialize($config);
+		
+
+		if ( ! $this->upload->do_upload($form_name)){
+			$error = array('error' => $this->upload->display_errors());
+			return ['data'=>$error,'result'=>false];
+			// $this->load->view('upload_form', $error);
+		}else{
+			$data = array('upload_data' => $this->upload->data());
+			return ['data'=>$data,'result'=>true];
+			// $this->load->view('upload_success', $data);
+		}
 	}
 
 	public function sendEmail($from,$fromName,$to,$subject,$content){

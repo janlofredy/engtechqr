@@ -2,11 +2,16 @@
 <label for="set_establishment_qr">Set Establishment</label>
 <input type="file" id="set_establishment_qr" accept="image/*" capture>
 
+
+<label for="newGuest">Scan New Guest</label>
+<input type="file" id="newGuest" accept="image/*" capture>
+
 <!-- <input type="file" id="New Guest" accept="image/*" capture> -->
 
 <div id="reader" ></div>
 
 <script type="text/javascript">
+  
 const html5QrCode = new Html5Qrcode("reader");
 // File based scanning
 const fileinput = document.getElementById('set_establishment_qr');
@@ -46,4 +51,3 @@ fileinput.addEventListener('change', e => {
 
 
 </script>
-

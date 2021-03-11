@@ -64,7 +64,7 @@ class Otp extends MY_Model {
 	}
 
 	public function OTPWrong($otpid,$newtries){
-		$this->db->where('otp_id',$otpid)->set('status',$newtries)->update($this::DB_TABLE);
+		$this->db->where('otp_id',$otpid)->set('tries',$newtries)->update($this::DB_TABLE);
 	}
 
 }

@@ -23,7 +23,7 @@ class Landing extends MY_Controller {
 	}
 
 	public function login_user(){
-		$this->load->view('template/header');
+		$this->load->view('template/header',['controller'=>$this::cont]);
 		$this->load->view('login_user');
 		$this->load->view('template/footer');
 	}
@@ -32,11 +32,8 @@ class Landing extends MY_Controller {
 		$this->load->model('individual_info');
 		$qrin = new Individual_info;
 		$user = $qrin->getByEmail($this->input->post('email_address'));
-		// var_dump( $user );
 		if($user){
-			$email = $this->sendOTPtoEmail($user->individual_id,$user->email_address);
-			// echo json_encode($email);
-			// return $email;
+			$email = $this->sendOTPtoEmail($user->user_id,$user->email_address);
 			if($email){
 				$user->result = 'success';
 				echo json_encode($user);
@@ -50,22 +47,6 @@ class Landing extends MY_Controller {
 			echo json_encode(['result'=>'Email Not Found']);
 			return json_encode(['result'=>'Email Not Found']);
 		}
-		
-		// if($email == 'success'){
-		// 	echo json_encode( $user );
-		// }
-		// echo json_encode('error');
-		
-		
-		// $this->load->model('individual_info');
-		// $id = '24';
-		// $this->session->set_userdata('type','Individual');
-		// var_dump( $qrin->getOne($id) );
-		// $data = $qrin->getOne($id);
-		// $this->session->set_userdata($qrin->getOne($id) );
-		// $this->session->set_userdata('qr_info',  );
-		// $this->session->set_userdata('type','Individual');
-		// redirect('landing');
 	}
 
 	public function sendOTPtoEmail($id,$email){
@@ -98,13 +79,10 @@ class Landing extends MY_Controller {
 	public function resendOTPToEmail(){
 		$this->load->model('individual_info');
 		$qrin = new Individual_info;
-		// $email = $this->sendOTPtoEmail( $this->input->post('email_address') );
-		$user = $qrin->getByEmail($this->input->post('email_address'));
-		// var_dump( $user );
+		$email = $this->input->post('email_address');
+		$user = $qrin->getByEmail($email);
 		if($user){
-			$email = $this->sendOTPtoEmail($user->individual_id,$user->email_address);
-			// echo json_encode($email);
-			// return $email;
+			$email = $this->sendOTPtoEmail($user->user_id,$user->email_address);
 			if($email){
 				$user->result = 'success';
 				echo json_encode($user);
@@ -118,7 +96,6 @@ class Landing extends MY_Controller {
 			echo json_encode(['result'=>'Email Not Found']);
 			return json_encode(['result'=>'Email Not Found']);
 		}
-		// echo json_encode($email);
 	}
 
 	public function resendOTPToMobile(){
@@ -137,67 +114,190 @@ class Landing extends MY_Controller {
 		$res = $otpMod->getOTP($userid, $otp);
 		// echo json_encode($res);
 		$result = '';
-		if( date_diff( date_create($res->time),  date_create(date("Y-m-d H:i:s")))->i > 5){
-			$result="OTP Expired";
-		}else if($res->tries > 5){
-			$result="Tries remaining: ". (5-$res->tries);
-		}else{
-			if($otp == $res->otp){
+		if($res){
+			if( date_diff( date_create($res->time),  date_create(date("Y-m-d H:i:s")))->i > 5){
+				$result="OTP Expired";
+			}else if($res->tries >= 5){
+				$result="You Have used all your tries. Please Try again Later";
 				$otpMod->OTPAccepted($res->otp_id);
-				$result="Success";
-				// $this->session->set_userdata('type','Individual')
-				$this->session->set_userdata($qrin->getOne($userid) );
-				// $this->session->set_userdata('qr_info',  );
-				$this->session->set_userdata('type','Individual');
 			}else{
-				$otpMod->OTPWrong($res->otp_id,($res->tries+1) );
-				$result="Tries remaining: ". (5 - $res->tries);
-			}
+				if($otp == $res->otp){
+					$otpMod->OTPWrong($res->otp_id,($res->tries+1) );
+					$otpMod->OTPAccepted($res->otp_id);
+					$result="Success";
+					// $this->session->set_userdata('type','Individual')
+					$this->session->set_userdata($qrin->getBy(['user_id'=>$userid]) );
+					// $this->session->set_userdata('qr_info',  );
+					$this->session->set_userdata('type','Individual');
+				}else{
+					$otpMod->OTPWrong($res->otp_id,($res->tries+1) );
+					$result="Tries remaining: ". (5 - $res->tries);
+				}
+			}	
+		}else{
+			$result="OTP Expired or You have used your alloted tries ";
 		}
+		
 
-		echo json_encode( ['result'=>$result] );
+		echo json_encode( [ 'result' => $result ] );
+	}
 
+	public function resendOTPToEmailEst(){
+		$this->load->model('individual_info');
+		$qrin = new Individual_info;
+		$email = $this->input->post('email_address');
+		$user = $qrin->getByEmail($email);
+		if($user){
+			$email = $this->sendOTPtoEmail($user->user_id,$user->email_address);
+			if($email){
+				$user->result = 'success';
+				echo json_encode($user);
+				return $email;
+			}else{
+				echo json_encode(['result'=>'Failed to Send to Email']);
+				return json_encode(['result'=>'Failed to Send to Email']);
+
+			}
+		}else{
+			echo json_encode(['result'=>'Email Not Found']);
+			return json_encode(['result'=>'Email Not Found']);
+		}
+	}
+
+	public function resendOTPToMobileEst(){
+		$num = $this->sendOTPtoMobile( $this->input->post('mobile_number') );
+
+		echo json_encode($num);
+	}
+
+	public function verifyOTPEst(){
+		$otp = $this->input->post('otp');
+		$userid = $this->input->post('user_id');
+		$this->load->model('otp');
+		$this->load->model('individual_info');
+		$qrin = new Individual_info;
+		$otpMod = new Otp;
+		$res = $otpMod->getOTP($userid, $otp);
+		// echo json_encode($res);
+		$result = '';
+		if($res){
+			if( date_diff( date_create($res->time),  date_create(date("Y-m-d H:i:s")))->i > 5){
+				$result="OTP Expired";
+			}else if($res->tries >= 5){
+				$result="You Have used all your tries. Please Try again Later";
+				$otpMod->OTPAccepted($res->otp_id);
+			}else{
+				if($otp == $res->otp){
+					$otpMod->OTPWrong($res->otp_id,($res->tries+1) );
+					$otpMod->OTPAccepted($res->otp_id);
+					$result="Success";
+					// $this->session->set_userdata('type','Individual')
+					$this->session->set_userdata($qrin->getBy(['user_id'=>$userid]) );
+					// $this->session->set_userdata('qr_info',  );
+					$this->session->set_userdata('type','Individual');
+				}else{
+					$otpMod->OTPWrong($res->otp_id,($res->tries+1) );
+					$result="Tries remaining: ". (5 - $res->tries);
+				}
+			}	
+		}else{
+			$result="OTP Expired or You have used your alloted tries ";
+		}
+		
+
+		echo json_encode( [ 'result' => $result ] );
 	}
 
 	public function login_establishment(){
-		// $this->generateQr('070af40e1d89179');
+		$this->load->view('template/header',['controller'=>$this::cont]);
+		$this->load->view('login_establishment');
+		$this->load->view('template/footer');
 	}
 
 
 	public function loginEstablishment(){
-		$this->load->model('establishment_info');
-		$qrin = new Establishment_info;
-		$id = '1';
-		$this->session->set_userdata('type','Establishment');
-		$this->session->set_userdata($qrin->getOne($id) );
-		redirect('Establishment');
-		// $this->session->set_userdata('type','Establishment');
+		$this->load->model('establishment');
+		$qrin = new Establishment;
+		$user = $qrin->getByEmail($this->input->post('email_address'));
+		if($user){
+			$email = $this->sendOTPtoEmail($user->user_id,$user->email_address);
+			if($email){
+				$user->result = 'success';
+				echo json_encode($user);
+				return $email;
+			}else{
+				echo json_encode(['result'=>'Failed to Send to Email']);
+				return json_encode(['result'=>'Failed to Send to Email']);
+
+			}
+		}else{
+			echo json_encode(['result'=>'Email Not Found']);
+			return json_encode(['result'=>'Email Not Found']);
+		}
 	}
 
 	public function create_user(){
-		$this->load->view('template/header');
+		$this->load->view('template/header',['controller'=>$this::cont]);
 		$this->load->view('create_user');
 		$this->load->view('template/footer');
 		// echo $this->generateQr('ENGTECH QR');
 	}
 
-	public function create_company(){
+	public function create_establishment(){
+		$this->load->view('template/header',['controller'=>$this::cont]);
 		$this->load->view('create_company');
+		$this->load->view('template/footer');
 	}
 
 	public function createUser(){
-		// var_dump($this->input->post());
+		$data = $this->input->post();
+		$this->db->trans_start();
+		// var_dump($data);
+		unset($data['terms']);
+		unset($data['otp_email']);
+		unset($data['otp']);
+		$facePath = 'imageUploads/faceImages/';
+		$idPath = 'imageUploads/idImages/';
+		$faceidPath = 'imageUploads/faceidImages/';
+		$this->load->model('users');
+		$usr = new Users;
+		$usrID = $usr->insertNew(['is_not_temp_pass'=>1]);
+		$data['user_id'] = $usrID;
+
 		$this->load->model('individual_info');
 		$indiv = new Individual_info;
-		$qrInfo = $indiv->insertNew($this->input->post());
-		$qrin = new Individual_info;
-		$qr_info = $qrin->getQRInfo($qrInfo);
-		$this->generateQr($qr_info);
+		$qrInfo = $indiv->insertNew($data);
+		$faceimg = $this->uploadFile('face_image',$usrID,$facePath);
+		$idimg = $this->uploadFile('id_image',$usrID,$idPath);
+		$faceidimg = $this->uploadFile('face_id_image',$usrID,$faceidPath);
+		// echo '<pre>';
+		// var_dump($faceimg);
+		// var_dump($idimg);
+		// var_dump($faceidimg);
+		// echo '</pre>';
+		if($faceimg['result'] && $idimg['result'] && $faceidimg['result']){
 
-		$qrin = new Individual_info;
-		$this->session->set_userdata('type','Individual');
-		$this->session->set_userdata($qrin->getOne($qrInfo) );
-		redirect('individual');
+			$a = $facePath.$faceimg['data']['upload_data']['file_name'];
+			$b = $idPath.$idimg['data']['upload_data']['file_name'];
+			$c = $faceidPath.$faceidimg['data']['upload_data']['file_name'];
+			$indiv->updateById($qrInfo,['face_image'=>$a,'id_image'=>$b,'face_id_image'=>$c]);
+			$qrin = new Individual_info;
+			$qr_info = $qrin->getQRInfo($qrInfo);
+			$this->generateQr($qr_info);
+			$email = $data['email_address'];
+			$num = $this->sendOTPtoEmail( $qrInfo, $email );
+			// echo($num);
+
+			echo json_encode(['result'=>true,'message'=>'Check your e-mail for your OTP','data'=>$indiv->getOne($qrInfo)]);
+			// echo json_encode();
+		// 	// $qrin = new Individual_info;
+		// 	// $this->session->set_userdata('type','Individual');
+			// $this->session->set_userdata($qrin->getOne($qrInfo) );
+		// 	// redirect('individual');
+			$this->db->trans_complete();
+		}else{
+			echo json_encode(['result'=>false,'message'=>'Failed to upload your images. Please select an image smaller than 10mB']);
+		}
 		// echo $qr_info;
 
 	}

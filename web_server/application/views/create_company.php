@@ -27,7 +27,7 @@
 <div class="card" style="border-radius:0px;">
 	<div class="card-body" style="color:#7d7d7d;">
 		<!-- <form class="form-horizontal" action="<?=base_url('landing/createUser')?>" method="POST"> -->
-		<form class="form-horizontal" action="#" method="POST" id="createuserForm" enctype="multipart/form-data">
+		<form class="form-horizontal" action="#" method="POST" id="createEstablishmentForm" enctype="multipart/form-data">
 			<fieldset>
 				<div id="basic_info">
 					<div class="row" style="color:#0a3663;">
