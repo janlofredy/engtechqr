@@ -4,7 +4,9 @@
 // print_r( ($this->session->userdata()) );
 // echo '</pre></center>';
 ?>
-<script src="<?=base_url()?>plugins/html5qrcode/html5qrcode.js"></script> 
+<script src= 
+"https://html2canvas.hertzen.com/dist/html2canvas.min.js"> 
+    </script> 
 <div class="card" style="border-radius:0px;">
   <div class="card-body" style="color:#7d7d7d;">
     <div id="qrcode">
@@ -126,8 +128,8 @@
 <script type="text/javascript">
   $(document).ready(function($) {
       
-  var elem = document.getElementById('saveImageDIV');
-  let getCanvas;
+    var elem = document.getElementById('saveImageDIV');
+    let getCanvas;
     html2canvas(elem,{
       Logging: false, // log switch to view the internal execution process of html2canvas
       width:  elem.clientWidth , // DOM original width
@@ -136,15 +138,15 @@
       scrollX: 0,
       Usecors: true 
     }).then((canvas) => {
-        // var imagedata = canvas.toDataURL('image/png');
-        // var imgdata = imagedata.replace(/^data:image\/(png|jpg);base64,/, "");
+      // var imagedata = canvas.toDataURL('image/png');
+      // var imgdata = imagedata.replace(/^data:image\/(png|jpg);base64,/, "");
 
-        var imagedata =  canvas.toDataURL("image/png"); 
-              
-        var imgdata = imagedata.replace(/^data:image\/png/, "data:application/octet-stream"); 
-        $('#saveImage').attr("download", "QRCODE.png").attr("href", imgdata);
-        $('#saveImage').trigger('click');
-      })
+      var imagedata =  canvas.toDataURL("image/png"); 
+            
+      var imgdata = imagedata.replace(/^data:image\/png/, "data:application/octet-stream"); 
+      $('#saveImage').attr("download", "QRCODE.png").attr("href", imgdata);
+      $('#saveImage').trigger('click');
+    })
   });
   // console.log(elem)
 </script>

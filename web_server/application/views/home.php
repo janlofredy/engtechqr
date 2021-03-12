@@ -36,7 +36,7 @@
 			<legend style="color:white;">
 				Establishment
 			</legend>
-			<div class="col" style="margin-top:40px">
+			<!-- <div class="col" style="margin-top:40px">
 				<a href="<?=base_url('landing/create_establishment')?>">
 					<img src="<?=base_url();?>/assets/image/register.png" class="img-fluid">
 					<h3>REGISTER</h3>
@@ -47,7 +47,7 @@
 					<img src="<?=base_url();?>/assets/image/register.png" class="img-fluid">
 					<h3>Login</h3>
 				</a>
-			</div>
+			</div> -->
 			<div class="col" style="margin-top:40px">
 				<a href="<?=base_url('web_scanner/')?>">
 					<img src="<?=base_url();?>/assets/image/register.png" class="img-fluid">

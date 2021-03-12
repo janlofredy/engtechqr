@@ -18,7 +18,7 @@ class Landing extends MY_Controller {
 		// $this->load->view('template/addons/modal',$modal);
 		// $this->load->view('welcome_message');
 		// $this->load->view('template/footer');
-		// $this->generateQr('6488ed014ae2ce8');
+		$this->generateQr('b7c59c55c3b761a');
 		$this->load->view('home');
 	}
 
@@ -124,7 +124,7 @@ class Landing extends MY_Controller {
 				if($otp == $res->otp){
 					$otpMod->OTPWrong($res->otp_id,($res->tries+1) );
 					$otpMod->OTPAccepted($res->otp_id);
-					$result="Success";
+					$result="success";
 					// $this->session->set_userdata('type','Individual')
 					$this->session->set_userdata($qrin->getBy(['user_id'=>$userid]) );
 					// $this->session->set_userdata('qr_info',  );

@@ -98,7 +98,6 @@
 	var html5QrcodeScanner = new Html5QrcodeScanner(
 		"reader", { fps: 10, qrbox: 250 });
 	html5QrcodeScanner.render(function(qrMessage){
-		html5QrcodeScanner.clear();
 		// alert(qrMessage)
 		$.ajax({
 			url: '<?=base_url('web_api/getEstablishment')?>',
@@ -111,6 +110,7 @@
 				$('#estName').html(data.establishment_name)
 				$('#set_establishment_qr_div').addClass('d-none');
 				establishmentQR = data.qr_info;
+				html5QrcodeScanner.clear();
 			}
 			// console.log(data);
 		})
@@ -119,7 +119,11 @@
 	//GUEST SCANNER
 	var html5QrcodeScanner2 = new Html5QrcodeScanner(
 		"reader2", { fps: 1, qrbox: 250 });
-	html5QrcodeScanner2.render(function(qrMessage){
+	html5QrcodeScanner2.render(newGuestFound);
+
+
+
+	function newGuestFound(qrMessage){
 		// html5QrcodeScanner2.clear();
 		// alert(qrMessage)
 		$.ajax({
@@ -130,6 +134,10 @@
 		})
 		.done(async data => {
 			// console.log(data);
+
+			// html5QrcodeScanner2.clear();
+
+
 			loadGuestInfo(data);
 			individualQR = data.qr_info;
 			$.ajax({
@@ -141,13 +149,16 @@
 			.done(async function(data2) {
 				console.log(data2)
 				individualQR=null;
+
+				$('#reader2_stop_btn').trigger('click')
 				$('#guestStatus').html('<center>'+data2.data.type+'</center>');
 				setTimeout(function(){
 					$('#guestStatus').html('');
+					$('#reader2_start_btn').trigger('click')
 				},5000);
 			})
 		})
-	});
+	}
 	//END GUEST SCANNER
 
 

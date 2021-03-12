@@ -270,27 +270,28 @@
 									</div>
 								</div>
 							</div>
+							<form id="otpVerifyForm">
 							<div class="row">
 								<div class="col">
 									<br>
 									<p>Did not receive OTP? Click this button to resend OTP</p>
 									<a id="btn_send_otp" class="btn btn-primary btn-sm text-white"
-									style="
-									background-color: #074886;
-									border-top-left-radius: 30px 20px;
-									border-bottom-left-radius: 30px 20px;
-									border-top-right-radius: 30px 20px;
-									border-bottom-right-radius: 30px 20px;
-									"><i id="nav_btn_icon" class="fa fa-paper-plane"></i> RESEND OTP NOW</a>
+										style="
+										background-color: #074886;
+										border-top-left-radius: 30px 20px;
+										border-bottom-left-radius: 30px 20px;
+										border-top-right-radius: 30px 20px;
+										border-bottom-right-radius: 30px 20px;
+										"><i id="nav_btn_icon" class="fa fa-paper-plane"></i> RESEND OTP NOW</a>
 								</div>
 							</div>
-							<form id="otpVerifyForm">
 								<div id="div_btn_send_otp" class="float-center">
 									<div class="row">
 										<div class="col col-md-4 offset-md-4">
 											<div class="container">
 												<br>
 												<input type="text" id="otpVerify" name="otp" placeholder="One Time Pin(Email)" class="form-control text-center">
+												<br>
 												<small>One Time Pin via Email</small>
 											</div>
 										</div>
@@ -428,15 +429,15 @@
 		.done(function(data) {
 			console.log(data.result);
 			if(data.result == "OTP Expired"){
-				$('otpVerifyForm').validate().showErrors({'otp':data.result})
+				$('#otpVerifyForm').validate().showErrors({'otp':data.result})
 				// alert(data.result);
 			}else if(data.result.includes('Tries remaining')){
-				$('otpVerifyForm').validate().showErrors({'otp':data.result})
+				$('#otpVerifyForm').validate().showErrors({'otp':data.result})
 				// alert(data.result);
 			}else if(data.result == 'success'){
 				location.reload();
 			}else{
-				$('otpVerifyForm').validate().showErrors({'otp':data.result})
+				$('#otpVerifyForm').validate().showErrors({'otp':data.result})
 				// alert(data.result);
 			}
 		})
