@@ -4,9 +4,7 @@
 // print_r( ($this->session->userdata()) );
 // echo '</pre></center>';
 ?>
-<script src= 
-"https://html2canvas.hertzen.com/dist/html2canvas.min.js"> 
-    </script> 
+<script src="<?=base_url()?>plugins/html5qrcode/html5qrcode.js"></script> 
 <div class="card" style="border-radius:0px;">
   <div class="card-body" style="color:#7d7d7d;">
     <div id="qrcode">
@@ -126,11 +124,10 @@
   </div>
 </div>
 <script type="text/javascript">
+  $(document).ready(function($) {
+      
   var elem = document.getElementById('saveImageDIV');
-  console.log(elem)
   let getCanvas;
-  $('#saveImage').on('click',function(event){
-    // event.preventDefault();
     html2canvas(elem,{
       Logging: false, // log switch to view the internal execution process of html2canvas
       width:  elem.clientWidth , // DOM original width
@@ -149,4 +146,5 @@
         $('#saveImage').trigger('click');
       })
   });
+  // console.log(elem)
 </script>

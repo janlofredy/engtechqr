@@ -7,7 +7,7 @@ class Individual extends MY_Controller {
 
 	public function index()
 	{
-		$QR = "<center><img width='400px' src=".base_url().'QRimages/'.$this->session->userdata('qr_info').'-Qrcode.png'."></center>";
+		$QR = "<center><img width='100%' src=".base_url().'QRimages/'.$this->session->userdata('qr_info').'-Qrcode.png'."></center>";
 		// echo $QR;
 		$this->load->view('template/header',['controller'=>$this::cont]);
 		$this->load->view('view_user',['qr'=>$QR,'profile'=>$this->session->userdata()]);

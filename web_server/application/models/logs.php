@@ -52,12 +52,16 @@ class Logs extends MY_Model {
 				'time_out'=>null
 			])->count_all_results($this::DB_TABLE);
 		// return $isNew;
+		$res = [];
 		if( $isNew > 0 ){
-			return $this->db->where([
+
+			$res['data'] = $this->db->where([
 				'establishment_id'=>$estID,
 				'individual_id'=>$indID,
 				'time_out'=>null
 			])->set(['time_out'=>date("Y-m-d H:i:s"),'date_updated'=>date("Y-m-d H:i:s")])->update($this::DB_TABLE);
+			$res['type']= 'Logged out';
+			return $res;
 
 		}else{
 			$data= [
@@ -66,7 +70,10 @@ class Logs extends MY_Model {
 				'time_in'=>date("Y-m-d H:i:s"),
 				'date_created' => date("Y-m-d H:i:s")
 			];
-			return $this->db->insert($this::DB_TABLE,$data);
+			$res['data'] =  $this->db->insert($this::DB_TABLE,$data);
+
+			$res['type']='Logged in';
+			return $res;
 		}
 
 	}

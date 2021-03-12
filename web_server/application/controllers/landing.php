@@ -18,7 +18,7 @@ class Landing extends MY_Controller {
 		// $this->load->view('template/addons/modal',$modal);
 		// $this->load->view('welcome_message');
 		// $this->load->view('template/footer');
-		// $this->generateQr('070af40e1d89179');
+		// $this->generateQr('6488ed014ae2ce8');
 		$this->load->view('home');
 	}
 
