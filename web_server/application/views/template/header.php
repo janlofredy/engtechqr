@@ -35,7 +35,11 @@
 		<div class="col">
 			<div class="collapse navbar-collapse pull-right collapse show" id="navbarText">
 		    <ul class="navbar-nav mr-auto"></ul>
+
+			<?php if($this->session->has_userdata('type') ): ?>
 		    <a href="<?=base_url($controller.'/logout')?>" type="button" class="btn btn-danger">Logout</a>
+			<?php endif;?>
+		    
 		    <span class="navbar-text" style="color:white;font-size:10px;">
 		      Powered by: <a href="http://engtechglobalsolutions.com/" target='_blank' style="font-weight:bold;">ENGTECH GLOBAL SOLUTIONS INC.</a>
 		    </span>

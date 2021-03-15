@@ -116,7 +116,7 @@ class Landing extends MY_Controller {
 		$result = '';
 		if($res){
 			if( date_diff( date_create($res->time),  date_create(date("Y-m-d H:i:s")))->i > 5){
-				$result="OTP Expired";
+				$result="OTP Expired, Resend Email and try again.";
 			}else if($res->tries >= 5){
 				$result="You Have used all your tries. Please Try again Later";
 				$otpMod->OTPAccepted($res->otp_id);
@@ -131,11 +131,11 @@ class Landing extends MY_Controller {
 					$this->session->set_userdata('type','Individual');
 				}else{
 					$otpMod->OTPWrong($res->otp_id,($res->tries+1) );
-					$result="Tries remaining: ". (5 - $res->tries);
+					$result="Oops wrong OTP! Tries remaining: ". (5 - $res->tries);
 				}
 			}	
 		}else{
-			$result="OTP Expired or You have used your alloted tries ";
+			$result="OTP Expired or You have used your alloted tries. Please get a new OTP.";
 		}
 		
 

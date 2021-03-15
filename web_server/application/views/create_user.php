@@ -428,17 +428,10 @@
 		})
 		.done(function(data) {
 			console.log(data.result);
-			if(data.result == "OTP Expired"){
-				$('#otpVerifyForm').validate().showErrors({'otp':data.result})
-				// alert(data.result);
-			}else if(data.result.includes('Tries remaining')){
-				$('#otpVerifyForm').validate().showErrors({'otp':data.result})
-				// alert(data.result);
-			}else if(data.result == 'success'){
+			if(data.result == 'success'){
 				location.reload();
 			}else{
 				$('#otpVerifyForm').validate().showErrors({'otp':data.result})
-				// alert(data.result);
 			}
 		})
 		
