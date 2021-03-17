@@ -26,89 +26,65 @@
 <br>
 <div class="card" style="border-radius:0px;">
 	<div class="card-body" style="color:#7d7d7d;">
-		<!-- <form class="form-horizontal" action="<?=base_url('landing/createUser')?>" method="POST"> -->
+		<!-- <form class="form-horizontal" action="<?=base_url('landing/createEstablishment')?>" method="POST"> -->
 		<form class="form-horizontal" action="#" method="POST" id="createEstablishmentForm" enctype="multipart/form-data">
 			<fieldset>
 				<div id="basic_info">
 					<div class="row" style="color:#0a3663;">
 						<div class="col">
-							<h3>Basic Information</h3>
+							<h3>Establishment Registration</h3>
 							<hr style="background-color: #0a3663;">
 						</div>
 					</div>
-					<!-- Primay Information -->
+					<!-- Primary Information -->
 						<legend style="font-weight:bold;">
-							Primary Information
+							Establishment Information
 						</legend>
 						<div class="row">
 							<div class="col-md-4">
 								<!-- Text input-->
 								<div class="form-group">
-									<label class="control-label" for="first_name">First Name*</label>
-									<input id="first_name" name="first_name" type="text" placeholder="First Name" class="form-control input-md" required>
-								</div>
-							</div>
-							<div class="col-md-4">
-								<!-- Text input-->
-								<div class="form-group">
-									<label class="control-label" for="middle_name">Middle Name</label>
-									<input id="middle_name" name="middle_name" type="text" placeholder="Middle Name" class="form-control input-md">
-								</div>
-							</div>
-							<div class="col-md-4">
-								<!-- Text input-->
-								<div class="form-group">
-									<label class="control-label" for="last_name">Last Name*</label>
-									<input id="last_name" name="last_name" type="text" placeholder="Last Name" class="form-control input-md" required>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-2">
-								<!-- Text input-->
-								<div class="form-group">
-									<label class="control-label" for="suffix">Suffix</label>
-									<input id="suffix" name="suffix" type="text" placeholder="Suffix" class="form-control input-md">
+									<label class="control-label" for="establishment_name">Establishment Name*</label>
+									<input id="establishment_name" name="establishment_name" type="text" placeholder="Establishment Name" class="form-control input-md" required>
 								</div>
 							</div>
 							<div class="col-md-2">
 								<!-- Select Basic -->
 								<div class="form-group">
-									<label class="control-label" for="gender">Gender*</label>
-									<select id="gender" name="gender" class="form-control" required>
-										<option value="" disabled selected>Gender</option>
-										<option value="Male">Male</option>
-										<option value="Female">Female</option>
+									<label class="control-label" for="establishment_type">Establishment Type*</label>
+									<select id="establishment_type" name="establishment_type" class="form-control" required>
+										<option value="" disabled selected>Establishment Type</option>
+										<option value="Agriculture">Agriculture</option>
+										<option value="Bank">Bank</option>
+										<option value="Barangay Hall">Barangay Hall</option>
+										<option value="Church">Church</option>
+										<option value="Checkpoint">Checkpoint</option>
+										<option value="City Hall">City Hall</option>
+										<option value="City Health Office">City Health Office</option>
+										<option value="Clinic">Clinic</option>
+										<option value="Conveniunce Store">Conveniunce Store</option>
+										<option value="Department Store">Department Store</option>
+										<option value="Hardware">Hardware</option>
+										<option value="Hospital">Hospital</option>
+										<option value="Hotel">Hotel</option>
+										<option value="Insurance">Insurance</option>
+										<option value="Laboratory">Laboratory</option>
+										<option value="Mall">Mall</option>
+										<option value="Market">Market</option>
+										<option value="Pharmacy/Drugstore">Pharmacy/Drugstore</option>
+										<option value="Police Station">Police Station</option>
+										<option value="Public Vehicle">Public Vehicle</option>
+										<option value="Restaurant">Restaurant</option>
+										<option value="Remittace Center">Remittace Center</option>
+										<option value="School">School</option>
+										<option value="Store">Store</option>
+										<option value="Super Market">Super Market</option>
 										<option value="Others">Others</option>
 									</select>
 								</div>
 							</div>
-							<div class="col-md-3">
-								<!-- Text input-->
-								<div class="form-group">
-									<label class="control-label" for="date_of_birth">Date of Birth*</label>
-									<input id="date_of_birth" name="date_of_birth" type="date" placeholder="Date of Birth" class="form-control input-md" required>
-								</div>
-							</div>
-							<div class="col-md-2">
-								<!-- Text input-->
-								<div class="form-group">
-									<label class="control-label" for="mobile_number">Mobile Number*</label>
-									<!-- <input id="mobile_number" name="mobile_number" type="text" placeholder="Mobile Number" maxlength="11" class="form-control input-md"
-									onchange="$('input[name=otp_mobille_number]').val($(this).val());"> -->
-									<input id="mobile_number" name="mobile_number" type="text" placeholder="Mobile Number" maxlength="11" class="form-control input-md" required>
-								</div>
-							</div>
-							<div class="col-md-3">
-								<!-- Text input-->
-								<div class="form-group">
-									<label class="control-label" for="email_address">Email Address*</label>
-									<input id="email_address" name="email_address" type="email" placeholder="Email Address" class="form-control input-md email"
-									onchange="$('input[name=otp_email]').val($(this).val());" required>
-								</div>
-							</div>
 						</div>
-					<!-- End Primay Information -->
+					<!-- End Primary Information -->
 					<!-- Address -->
 					<legend style="font-weight:bold;">
 						Address
@@ -172,56 +148,49 @@
 				<div id="attatchments" class="d-none">
 					<div class="row" style="color:#0a3663;">
 						<div class="col">
-							<h3>Upload Attachments</h3>
+							<h3>Contact Person Information</h3>
 							<hr style="background-color: #0a3663;">
 						</div>
 					</div>
-					<!-- File Attatchments -->
+					<legend style="font-weight:bold;">
+						Contact Person
+					</legend>
 					<div class="row">
-						<div class="col col-md-4 col-lg-4">
-							<center>
-								<div class="card" style="margin:10px;">
-									<img id="img_face_image" class="card-img-top" src="<?= base_url() ?>assets/image/blank-image.png" alt="Card image cap">
-									<div class="card-body">
-										<h5 class="card-title">Photo of Your Face</h5>
-										<a type="button" class="btn btn-outline-success text-success" onclick="$('#face_image').trigger('click');">Upload Photo</a>
-										<input id="face_image" name="face_image" class="input-file hidden" type="file" accept="image/*" hidden required>
-									</div>
-								</div>
-							</center>
+						<div class="col-md-4">
+							<!-- Text input-->
+							<div class="form-group">
+								<label class="control-label" for="contact_first_name">First Name*</label>
+								<input id="contact_first_name" name="contact_first_name" type="text" placeholder="First" class="form-control input-md" required="" required>
+							</div>
 						</div>
-						<div class="col col-md-4 col-lg-4">
-							<center>
-								<div class="card" style="margin:10px;">
-									<img id="img_id_image" class="card-img-top" src="<?= base_url() ?>assets/image/blank-image.png" alt="Card image cap">
-									<div class="card-body">
-										<h5 class="card-title">Photo Of Your Valid ID</h5>
-										<a type="button" class="btn btn-outline-success text-success" onclick="$('#id_image').trigger('click');">Upload Valid ID</a>
-										<input id="id_image" name="id_image" class="input-file" type="file" accept="image/*" hidden required>
-									</div>
-								</div>
-							</center>
+						<div class="col-md-4">
+							<!-- Text input-->
+							<div class="form-group">
+								<label class="control-label" for="contact_middle_name">Middle Name*</label>
+									<input id="contact_middle_name" name="contact_middle_name" type="text" placeholder="Middle Name" class="form-control input-md" required>
+							</div>
 						</div>
-						<div class="col col-md-4 col-lg-4">
-							<center>
-								<div class="card" style="margin:10px;">
-									<img id="img_face_id_image" class="card-img-top" src="<?= base_url() ?>assets/image/blank-image.png" alt="Card image cap">
-									<div class="card-body">
-										<h5 class="card-title" style="font-size:15px; font-weight:bold;">Your Photo Holding Your Valid ID Beside Your Face</h5>
-										<a type="button" class="btn btn-outline-success text-success" onclick="$('#face_id_image').trigger('click');">Upload Valid ID</a>
-										<input id="face_id_image" name="face_id_image" class="input-file" type="file" accept="image/*" hidden required>
-									</div>
-								</div>
-							</center>
+						<div class="col-md-4">
+							<!-- Text input-->
+							<div class="form-group">
+								<label class="col control-label" for="contact_last_name">Last Name*</label>
+									<input id="contact_last_name" name="contact_last_name" type="text" placeholder="Last Name" class="form-control input-md" required>
+							</div>
 						</div>
-						<div class="col">
-							<div class="container">
-								<div class="checkbox">
-									<label for="terms">
-										<input type="checkbox" name="terms" id="terms" required>
-										I Accept The ENGTECH QR <a href="#" data-toggle="modal" data-target="#termsModal">Terms and Conditions</a>
-									</label>
-								</div>
+					</div>
+					<div class="row">
+						<div class="col-md-2">
+							<!-- Text input-->
+							<div class="form-group">
+								<label class="control-label" for="contact_mobile_number">Mobile Number*</label>
+								<input id="contact_mobile_number" name="contact_mobile_number" type="text" placeholder="Mobile Number" class="form-control input-md" required>
+							</div>
+						</div>
+						<div class="col-md-10">
+							<!-- Text input-->
+							<div class="form-group">
+								<label class="control-label" for="contact_email">Email Address*</label>
+								<input id="contact_email" name="contact_email" type="email" placeholder="Email Address" class="form-control input-md" required>
 							</div>
 						</div>
 					</div>
@@ -382,7 +351,7 @@
 		// any other default options and/or rules
 		});
 	$('#btn_next_basic').on('click', function(){
-		if($('#createuserForm').validate().element('#first_name') && $('#createuserForm').validate().element('#last_name') && $('#createuserForm').validate().element('#gender') && $('#createuserForm').validate().element('#date_of_birth') && $('#createuserForm').validate().element('#mobile_number') && $('#createuserForm').validate().element('#email_address') && $('#createuserForm').validate().element('#country') && $('#createuserForm').validate().element('#province') && $('#createuserForm').validate().element('#city_municipality') && $('#createuserForm').validate().element('#zip_code') && $('#createuserForm').validate().element('#barangay')){
+		if($('#createEstablishmentForm').validate().element('#establishment_name') && $('#createEstablishmentForm').validate().element('#establishment_type') && $('#createEstablishmentForm').validate().element('#country') && $('#createEstablishmentForm').validate().element('#province') && $('#createEstablishmentForm').validate().element('#city_municipality') && $('#createEstablishmentForm').validate().element('#zip_code') && $('#createEstablishmentForm').validate().element('#barangay')){
 			$('#attatchments').removeAttr('class');
 			$('#basic_info').attr('class','d-none');
 			$('.img_basic_info').attr("src", "<?= base_url() ?>assets/image/done-basic-info.png");
@@ -390,13 +359,13 @@
 	});
 
 	$('#attatchments_btn').on('click', function(){
-		if( $('#createuserForm').validate().element('#face_image') && $('#createuserForm').validate().element('#id_image') && $('#createuserForm').validate().element('#face_id_image') && $('#createuserForm').validate().element('#terms') ){
+		if( $('#createEstablishmentForm').validate().element('#contact_first_name') && $('#createEstablishmentForm').validate().element('#contact_middle_name') && $('#createEstablishmentForm').validate().element('#contact_last_name') && $('#createEstablishmentForm').validate().element('#contact_mobile_number') && $('#createEstablishmentForm').validate().element('#contact_email') ){
 
 			$.ajax({
-				url: '<?=base_url('landing/createUser')?>',
+				url: '<?=base_url('landing/createEstablishment')?>',
 				type: 'POST',
 				dataType: 'json',
-				data: new FormData(document.getElementById('createuserForm') ),
+				data: new FormData(document.getElementById('createEstablishmentForm') ),
 				processData:false,
 				contentType:false,
 				cache:false,

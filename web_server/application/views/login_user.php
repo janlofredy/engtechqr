@@ -11,7 +11,7 @@
 							<div class="container">
 								<div class="card" style="margin:10px; color: #343a40; font-weight: bold;">
 									<div class="card-body">
-										<h5 class="card-title">Login using your registered e-mail address</h5>
+										<h5 class="card-title">Individual login using your registered e-mail address</h5>
 										<div class="form-group">
 											<label class="control-label" for="email_add">Email Address:</label>
 											<input type="email" name="email_address" id="email_add" class="form-control" required>

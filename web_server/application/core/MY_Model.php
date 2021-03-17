@@ -47,12 +47,21 @@ class MY_Model extends CI_Model {
 			->get($this::DB_TABLE)
 			->row_array();
 	}
-
+	
 	public function getBy($where){
-		return $this->db->where($where) 
+		return $this->db->where($where)
 			->select('*')
 			->get($this::DB_TABLE)
 			->row_array();
+		return	$this->db->last_query();
+	}
+	
+	public function getSomeBy($select,$where){
+		return $this->db->where($where)
+			->select($select)
+			->get($this::DB_TABLE)
+			->result();
+		return	$this->db->last_query();
 	}
 
 	public function updateById($id,$arr){

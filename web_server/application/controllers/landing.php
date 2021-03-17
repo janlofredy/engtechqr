@@ -59,8 +59,6 @@ class Landing extends MY_Controller {
 		// if($email){
 		// 	return 'success';
 		// }
-		
-
 	}
 
 	public function sendOTPtoMobile($id,$num){
@@ -73,7 +71,6 @@ class Landing extends MY_Controller {
 		if($sms){
 			return 'success';
 		}
-
 	}
 
 	public function resendOTPToEmail(){
@@ -100,7 +97,6 @@ class Landing extends MY_Controller {
 
 	public function resendOTPToMobile(){
 		$num = $this->sendOTPtoMobile( $this->input->post('mobile_number') );
-
 		echo json_encode($num);
 	}
 
@@ -142,47 +138,19 @@ class Landing extends MY_Controller {
 		echo json_encode( [ 'result' => $result ] );
 	}
 
-	public function resendOTPToEmailEst(){
-		$this->load->model('individual_info');
-		$qrin = new Individual_info;
-		$email = $this->input->post('email_address');
-		$user = $qrin->getByEmail($email);
-		if($user){
-			$email = $this->sendOTPtoEmail($user->user_id,$user->email_address);
-			if($email){
-				$user->result = 'success';
-				echo json_encode($user);
-				return $email;
-			}else{
-				echo json_encode(['result'=>'Failed to Send to Email']);
-				return json_encode(['result'=>'Failed to Send to Email']);
-
-			}
-		}else{
-			echo json_encode(['result'=>'Email Not Found']);
-			return json_encode(['result'=>'Email Not Found']);
-		}
-	}
-
-	public function resendOTPToMobileEst(){
-		$num = $this->sendOTPtoMobile( $this->input->post('mobile_number') );
-
-		echo json_encode($num);
-	}
-
 	public function verifyOTPEst(){
 		$otp = $this->input->post('otp');
 		$userid = $this->input->post('user_id');
 		$this->load->model('otp');
-		$this->load->model('individual_info');
-		$qrin = new Individual_info;
+		$this->load->model('establishment_info');
+		$qrin = new Establishment_info;
 		$otpMod = new Otp;
 		$res = $otpMod->getOTP($userid, $otp);
 		// echo json_encode($res);
 		$result = '';
 		if($res){
 			if( date_diff( date_create($res->time),  date_create(date("Y-m-d H:i:s")))->i > 5){
-				$result="OTP Expired";
+				$result="OTP Expired, Resend Email and try again.";
 			}else if($res->tries >= 5){
 				$result="You Have used all your tries. Please Try again Later";
 				$otpMod->OTPAccepted($res->otp_id);
@@ -190,23 +158,30 @@ class Landing extends MY_Controller {
 				if($otp == $res->otp){
 					$otpMod->OTPWrong($res->otp_id,($res->tries+1) );
 					$otpMod->OTPAccepted($res->otp_id);
-					$result="Success";
+					$result="success";
 					// $this->session->set_userdata('type','Individual')
-					$this->session->set_userdata($qrin->getBy(['user_id'=>$userid]) );
+					$data = $qrin->getBy(['user_id'=>$userid]);
+					$this->session->set_userdata( $data );
 					// $this->session->set_userdata('qr_info',  );
-					$this->session->set_userdata('type','Individual');
+					$this->session->set_userdata('type','Establishment');
 				}else{
 					$otpMod->OTPWrong($res->otp_id,($res->tries+1) );
-					$result="Tries remaining: ". (5 - $res->tries);
+					$result="Oops wrong OTP! Tries remaining: ". (5 - $res->tries);
 				}
 			}	
 		}else{
-			$result="OTP Expired or You have used your alloted tries ";
+			$result="OTP Expired or You have used your alloted tries. Please get a new OTP.";
 		}
 		
 
-		echo json_encode( [ 'result' => $result ] );
+		echo json_encode( [ 'result' => $result, 'data'=> $data ] );
 	}
+
+	public function resendOTPToMobileEst(){
+		$num = $this->sendOTPtoMobile( $this->input->post('mobile_number') );
+		echo json_encode($num);
+	}
+
 
 	public function login_establishment(){
 		$this->load->view('template/header',['controller'=>$this::cont]);
@@ -216,11 +191,11 @@ class Landing extends MY_Controller {
 
 
 	public function loginEstablishment(){
-		$this->load->model('establishment');
-		$qrin = new Establishment;
+		$this->load->model('establishment_info');
+		$qrin = new Establishment_info;
 		$user = $qrin->getByEmail($this->input->post('email_address'));
 		if($user){
-			$email = $this->sendOTPtoEmail($user->user_id,$user->email_address);
+			$email = $this->sendOTPtoEmail($user->user_id,$user->contact_email);
 			if($email){
 				$user->result = 'success';
 				echo json_encode($user);
@@ -245,7 +220,7 @@ class Landing extends MY_Controller {
 
 	public function create_establishment(){
 		$this->load->view('template/header',['controller'=>$this::cont]);
-		$this->load->view('create_company');
+		$this->load->view('create_establishment');
 		$this->load->view('template/footer');
 	}
 
@@ -302,8 +277,8 @@ class Landing extends MY_Controller {
 
 	}
 
-	public function createCompany(){
-		return $this->input->post();
+	public function createEstablishment(){
+		echo json_encode( $this->input->post() );
 	}
 
 	public function verifyDuplicate(){

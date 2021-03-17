@@ -78,4 +78,13 @@ class Logs extends MY_Model {
 
 	}
 
+	public function getLogsBy($select,$where){
+		return $this->db->where($where)
+			->select($select)
+			->join('individual_info','logs.individual_id = individual_info.individual_id')
+			->get($this::DB_TABLE)
+			->result();
+		return	$this->db->last_query();
+	}
+
 }

@@ -1,9 +1,9 @@
-<?php
-// echo $qr;
-// echo '<center><pre>';
-// print_r( ($this->session->userdata()) );
-// echo '</pre></center>';
-?>
+<!-- <?php
+echo $qr;
+echo '<center><pre>';
+print_r( ($this->session->userdata()) );
+echo '</pre></center>';
+?> -->
 <script src= 
 "https://html2canvas.hertzen.com/dist/html2canvas.min.js"> 
     </script> 
