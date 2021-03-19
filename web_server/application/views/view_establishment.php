@@ -156,7 +156,7 @@ echo '</pre></center>';
 			
 		var elem = document.getElementById('saveImageDIV');
 		var getCanvas;
-		var logsTable;
+		// var logsTable;
 		html2canvas(elem,{
 			Logging: false, // log switch to view the internal execution process of html2canvas
 			width:  elem.clientWidth , // DOM original width
@@ -175,8 +175,9 @@ echo '</pre></center>';
 			$('#saveImage').trigger('click');
 		})
 
-		logsTable = $('#logsTable').dataTable({
-	        "serverSide": true,
+		var logsTable = $('#logsTable').dataTable({
+	        // "serverSide": true,
+	        "processing": true,
 	        ajax : { 
 	        	'url' : '<?=base_url('establishment/getLogs')?>',
 	        	'type' : 'POST',
@@ -190,20 +191,21 @@ echo '</pre></center>';
 				{ 'title': 'Name', 'data': 'name' },
 				{ 'title': 'Date - Time In', 'data': 'time_in'  },
 				{ 'title': 'Date - Time Out', 'data': 'time_out'  }
-			]
+			],
 		});
 
 		$('#startDate').on('change', function(event) {
 			event.preventDefault();
 			start = $(this).val();
-			console.log($('#logsTable').DataTable().ajax);
 			$('#logsTable').DataTable().ajax.reload(null,false);
+			// logsTable.ajax.reload(null,false);
 			/* Act on the event */
 		});
 		$('#endDate').on('change', function(event) {
 			event.preventDefault();
 			end = $(this).val();
 			$('#logsTable').DataTable().ajax.reload(null,false);
+			// logsTable.ajax.reload(null,false);
 			/* Act on the event */
 		});
 
