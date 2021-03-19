@@ -161,6 +161,7 @@ class Landing extends MY_Controller {
 					$result="success";
 					// $this->session->set_userdata('type','Individual')
 					$data = $qrin->getBy(['user_id'=>$userid]);
+
 					$this->session->set_userdata( $data );
 					// $this->session->set_userdata('qr_info',  );
 					$this->session->set_userdata('type','Establishment');
@@ -175,6 +176,28 @@ class Landing extends MY_Controller {
 		
 
 		echo json_encode( [ 'result' => $result, 'data'=> $data ] );
+	}
+
+	public function resendOTPToEmailEst(){
+		$this->load->model('establishment_info');
+		$qrin = new Establishment_info;
+		$email = $this->input->post('email_address');
+		$user = $qrin->getByEmail($email);
+		if($user){
+			$email = $this->sendOTPtoEmail($user->user_id,$user->contact_email);
+			if($email){
+				$user->result = 'success';
+				echo json_encode($user);
+				return $email;
+			}else{
+				echo json_encode(['result'=>'Failed to Send to Email']);
+				return json_encode(['result'=>'Failed to Send to Email']);
+
+			}
+		}else{
+			echo json_encode(['result'=>'Email Not Found']);
+			return json_encode(['result'=>'Email Not Found']);
+		}
 	}
 
 	public function resendOTPToMobileEst(){
@@ -263,7 +286,7 @@ class Landing extends MY_Controller {
 			$num = $this->sendOTPtoEmail( $usrID, $email );
 			// echo($num);
 
-			echo json_encode(['result'=>true,'message'=>'Check your e-mail for your OTP','data'=>$indiv->getOne($qrInfo)]);
+			echo json_encode(['result'=>true, 'message'=>'Check your e-mail for your OTP', 'data'=>$indiv->getOne($qrInfo)]);
 			// echo json_encode();
 		// 	// $qrin = new Individual_info;
 		// 	// $this->session->set_userdata('type','Individual');
@@ -278,7 +301,33 @@ class Landing extends MY_Controller {
 	}
 
 	public function createEstablishment(){
-		echo json_encode( $this->input->post() );
+		$res = false;
+		$message = 'Couldn\'t Finish Processing';
+		$this->load->model('users');
+		$this->load->model('establishment_info');
+		$data =  $this->input->post();
+		$this->db->trans_start();
+		$newUser = new Users;
+		$establishment = new Establishment_info;
+		$user_id = $newUser->insertNew(['is_not_temp_pass'=>1]);
+		$data['user_id'] = $user_id;
+		$establishmentId = $establishment->insertNew($data);
+		if($establishmentId){
+			$qrInfo = $establishment->getQRInfo($establishmentId);
+			$this->generateQr($qrInfo);
+			$email= $data['contact_email'];
+			$this->sendOTPtoEmail($user_id, $email);
+			$this->db->trans_complete();
+			$data=$establishment->getOne($establishmentId);
+			$res=true;
+			$message="Establishment Created!";
+		}else{
+			$res=false;
+			$message="Failed to created Account!";
+
+		}
+		echo json_encode(['result'=>$res,'message'=>$message, 'data'=>$data]);
+
 	}
 
 	public function verifyDuplicate(){

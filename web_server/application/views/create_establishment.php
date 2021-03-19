@@ -184,13 +184,13 @@
 							<div class="form-group">
 								<label class="control-label" for="contact_mobile_number">Mobile Number*</label>
 								<input id="contact_mobile_number" name="contact_mobile_number" type="text" placeholder="Mobile Number" class="form-control input-md" required>
-							</div>
-						</div>
+							</div
+>						</div>
 						<div class="col-md-10">
 							<!-- Text input-->
 							<div class="form-group">
 								<label class="control-label" for="contact_email">Email Address*</label>
-								<input id="contact_email" name="contact_email" type="email" placeholder="Email Address" class="form-control input-md" required>
+								<input id="contact_email" name="contact_email" onchange="$('input[name=otp_email]').val($(this).val());" type="email" placeholder="Email Address" class="form-control input-md" required>
 							</div>
 						</div>
 					</div>
@@ -198,7 +198,10 @@
 					<div id="div_btn_next_attatchments">
 						<div class="row">
 							<div class="col">
-								<a id="attatchments_btn" class="btn btn-primary text-white float-right"
+								<p id="attachment_notice" class="text-right"></p>
+							</div>
+							<div class="col">
+								<a id="attachment_btn" class="btn btn-primary text-white float-right"
 								style="
 								background-color: #074886;
 								width: 115px;
@@ -235,7 +238,7 @@
 									<input type="hidden" name="user_id" id="user_idVerify">
 									<h6><b>Email Address</b></h6>
 									<div class="input-group">
-										<input class="form-control" type="text" name="otp_email" disabled>
+										<input class="form-control" type="text" name="otp_email" id="otp_email" disabled>
 									</div>
 								</div>
 							</div>
@@ -358,9 +361,10 @@
 		}
 	});
 
-	$('#attatchments_btn').on('click', function(){
+	$('#attachment_btn').on('click', function(){
+		$('#attachment_btn').prop('disabled',true);
 		if( $('#createEstablishmentForm').validate().element('#contact_first_name') && $('#createEstablishmentForm').validate().element('#contact_middle_name') && $('#createEstablishmentForm').validate().element('#contact_last_name') && $('#createEstablishmentForm').validate().element('#contact_mobile_number') && $('#createEstablishmentForm').validate().element('#contact_email') ){
-
+			$('#attachment_notice').html('Loading...');
 			$.ajax({
 				url: '<?=base_url('landing/createEstablishment')?>',
 				type: 'POST',
@@ -376,9 +380,12 @@
 					$('#activation').removeAttr('class');
 					$('#attatchments').attr('class','d-none');
 					$('.img_upload_photo').attr("src", "<?= base_url() ?>assets/image/done-upload-photo.png");
-					$('#user_idVerify').val(dataRes.data.individual_id);
+					$('#user_idVerify').val(dataRes.data.user_id);
+					$('#attachment_btn').removeAttr('disabled');
 				}else{
-					alert(dataRes.message);
+					$('#attachment_notice').html(dataRes.message);
+					$('#attachment_btn').removeAttr('disabled');
+					// alert(dataRes.message);
 				}
 			})
 
@@ -386,8 +393,9 @@
 	});
 	$('#verifyOTPbtn').on('click',function(e){
 		e.preventDefault();
+		$('#verifyOTPbtn').prop('disabled',true);
 		$.ajax({
-			url: '<?=base_url("landing/verifyOTP")?>',
+			url: '<?=base_url("landing/verifyOTPEst")?>',
 			type: 'POST',
 			dataType: 'json',
 			data: {user_id: $('#user_idVerify').val(),otp: $('#otpVerify').val()},
@@ -402,19 +410,24 @@
 				location.reload();
 			}
 		})
-		
+		$('#verifyOTPbtn').removeAttr('disabled');
 	})
 	$('#btn_send_otp').on('click',function(){
+		$('#btn_send_otp').prop('disabled',true);
 		$.ajax({
-			url: '<?=base_url('landing/resendOTPToEmail')?>',
+			url: '<?=base_url('landing/resendOTPToEmailEst')?>',
 			type: 'POST',
 			dataType: 'json',
-			data: {email_address: $('#email_address').val()},
+			data: {email_address: $('#contact_email').val()},
 		})
 		.done(function() {
+			$('#btn_send_otp').removeAttr('disabled');
 			// console.log("success");
 		})
 		
+	})
+	$('#otpVerifyForm').on('submit',function(event){
+		event.preventDefault();
 	})
 	// $(document).on('change', 'input', function() {
 	// 	if ($('#first_name').val() && $('#last_name').val() && $('#gender').val()
@@ -432,9 +445,9 @@
 	// 	}
 	// 	console.log($('#terms').prop("checked"));
 	// 	if ($('#terms').prop("checked")) {
-	// 		$('#attatchments_btn').attr('class', 'btn btn-primary text-white float-right');
+	// 		$('#attachment_btn').attr('class', 'btn btn-primary text-white float-right');
 	// 	}else {
-	// 		$('#attatchments_btn').attr('class', 'disabled btn btn-primary text-white float-right');
+	// 		$('#attachment_btn').attr('class', 'disabled btn btn-primary text-white float-right');
 	// 	}
 	// });
 	// Add Function Change color of Verification and Generating QR Code

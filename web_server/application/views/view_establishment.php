@@ -16,7 +16,7 @@ echo '</pre></center>';
 			<a class="nav-link" data-toggle="tab" href="#menu1">Logs</a>
 		</li>
 		<li class="nav-item">
-			<a class="nav-link" data-toggle="tab" href="#menu2"></a>
+			<a class="nav-link" data-toggle="tab" href="#menu2">Account Information</a>
 		</li>
 	</ul>
 
@@ -187,9 +187,9 @@ echo '</pre></center>';
 	        	}
 	        },
 			columns: [
-					{ 'title': 'Name', 'data': 'name' },
-					{ 'title': 'Date - Time In', 'data': 'time_in'  },
-					{ 'title': 'Date - Time Out', 'data': 'time_out'  }
+				{ 'title': 'Name', 'data': 'name' },
+				{ 'title': 'Date - Time In', 'data': 'time_in'  },
+				{ 'title': 'Date - Time Out', 'data': 'time_out'  }
 			]
 		});
 

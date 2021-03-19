@@ -229,7 +229,7 @@
 					<div id="div_btn_next_attatchments">
 						<div class="row">
 							<div class="col">
-								<a id="attatchments_btn" class="btn btn-primary text-white float-right"
+								<a id="attachments_btn" class="btn btn-primary text-white float-right"
 								style="
 								background-color: #074886;
 								width: 115px;
@@ -392,7 +392,8 @@
 		}
 	});
 
-	$('#attatchments_btn').on('click', function(){
+	$('#attachments_btn').on('click', function(){
+		$('#attachments_btn').prop('disabled',true);
 		if( $('#createuserForm').validate().element('#face_image') && $('#createuserForm').validate().element('#id_image') && $('#createuserForm').validate().element('#face_id_image') && $('#createuserForm').validate().element('#terms') ){
 
 			$.ajax({
@@ -413,6 +414,7 @@
 					$('#user_idVerify').val(dataRes.data.user_id);
 				}else{
 					alert(dataRes.message);
+					$('#attachments_btn').removeAttr('disabled');
 				}
 			})
 
@@ -420,6 +422,7 @@
 	});
 	$('#verifyOTPbtn').on('click',function(e){
 		e.preventDefault();
+		$('#verifyOTPbtn').prop('disabled',true);
 		$.ajax({
 			url: '<?=base_url("landing/verifyOTP")?>',
 			type: 'POST',
@@ -432,6 +435,7 @@
 				location.reload();
 			}else{
 				$('#otpVerifyForm').validate().showErrors({'otp':data.result})
+				$('#verifyOTPbtn').removeAttr('disabled');
 			}
 		})
 		
@@ -521,9 +525,9 @@
 	// 	}
 	// 	console.log($('#terms').prop("checked"));
 	// 	if ($('#terms').prop("checked")) {
-	// 		$('#attatchments_btn').attr('class', 'btn btn-primary text-white float-right');
+	// 		$('#attachments_btn').attr('class', 'btn btn-primary text-white float-right');
 	// 	}else {
-	// 		$('#attatchments_btn').attr('class', 'disabled btn btn-primary text-white float-right');
+	// 		$('#attachments_btn').attr('class', 'disabled btn btn-primary text-white float-right');
 	// 	}
 	// });
 	// Add Function Change color of Verification and Generating QR Code
