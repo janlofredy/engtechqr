@@ -82,8 +82,10 @@ class Logs extends MY_Model {
 		return $this->db
 			->where('establishment_id',$where['establishment_id'])
 			->where('time_in <=',$where['time_in'])
+			->group_start()
 			->where('time_out >=',$where['time_out'],FALSE)
 			->or_where('time_out is null',NULL,FALSE)
+			->group_end()
 			->select($select)
 			->join('individual_info','logs.individual_id = individual_info.individual_id')
 			->get($this::DB_TABLE)
