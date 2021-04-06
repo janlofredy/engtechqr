@@ -396,6 +396,7 @@
 		$('#attachments_btn').prop('disabled',true);
 		if( $('#createuserForm').validate().element('#face_image') && $('#createuserForm').validate().element('#id_image') && $('#createuserForm').validate().element('#face_id_image') && $('#createuserForm').validate().element('#terms') ){
 
+
 			$.ajax({
 				url: '<?=base_url('landing/createUser')?>',
 				type: 'POST',
@@ -441,6 +442,7 @@
 		
 	})
 	$('#btn_send_otp').on('click',function(){
+		$('#btn_send_otp').prop('disabled',true);
 		$.ajax({
 			url: '<?=base_url('landing/resendOTPToEmail')?>',
 			type: 'POST',
@@ -448,6 +450,7 @@
 			data: {email_address: $('#email_address').val()},
 		})
 		.done(function() {
+			$('#btn_send_otp').removeAttr('disabled');
 			// console.log("success");
 		})
 		
@@ -463,7 +466,7 @@
 			.done(function(data) {
 				if(data.result){
 					$('#createuserForm').validate().showErrors({
-					  "email_address": "This Email Address is already Used, Please use a different Email Address. or you can login using your email address."
+					  "email_address": "This Email Address is already in use, Please use a different Email Address. or you can login using your email address."
 					});
 					$('#btn_next_basic').addClass('disabled')
 				}else{

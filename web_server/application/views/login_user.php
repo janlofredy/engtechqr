@@ -63,6 +63,7 @@
 
 	$('#sendByMobile').on('click', function(event) {
 		event.preventDefault();
+		$('#verifyOTP').validate().showErrors({'otp':"Sending OTP"});
 		$.ajax({
 			url: '<?=base_url('landing/resendOTPToMobile')?>',
 			type: 'POST',
@@ -95,6 +96,7 @@
 
 	$('#sendByEmail').on('click', function(event) {
 		event.preventDefault();
+		$('#verifyOTP').validate().showErrors({'otp':"Sending OTP"});
 		$.ajax({
 			url: '<?=base_url('landing/loginUser')?>',
 			type: 'POST',
@@ -127,6 +129,7 @@
 
 	$('#userLogin').on('submit', function(event) {
 		$('#loginBtn').prop('disabled',true);
+		$('#notice').html("Loading...")
 		event.preventDefault();
 		$.ajax({
 			url: '<?=base_url('landing/loginUser')?>',
@@ -154,6 +157,7 @@
 
 	$('#verifyOTP').on('submit', function(event) {
 		event.preventDefault();
+		$('#verifyOTP').validate().showErrors({'otp':"Verifying OTP"});
 		$('#verifyBtn').prop('disabled',true);
 		$.ajax({
 			url: '<?=base_url('landing/verifyOTP')?>',

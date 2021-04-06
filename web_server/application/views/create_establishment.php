@@ -242,6 +242,7 @@
 									</div>
 								</div>
 							</div>
+							<form id="otpVerifyForm">
 							<div class="row">
 								<div class="col">
 									<br>
@@ -273,6 +274,7 @@
 									</div>
 								</div>
 							</div>
+						</form>
 						</div>
 					</center>
 				</div>
@@ -388,7 +390,6 @@
 					// alert(dataRes.message);
 				}
 			})
-
 		}
 	});
 	$('#verifyOTPbtn').on('click',function(e){
@@ -402,15 +403,41 @@
 		})
 		.done(function(data) {
 			console.log(data.result);
-			if(data.result == "OTP Expired"){
-				alert(data.result);
-			}else if(data.result.includes('Tries remaining')){
-				alert(data.result);
-			}else if(data.result == 'success'){
+			if(data.result == "success"){
 				location.reload();
+			}else{
+				$('#otpVerifyForm').validate().showErrors({'otp':data.result})
+				$('#verifyOTPbtn').removeAttr('disabled');
 			}
 		})
 		$('#verifyOTPbtn').removeAttr('disabled');
+	})
+	$('#contact_email').on('change',function(){
+		if($('#createEstablishmentForm').validate().element('#contact_email')){
+			$.ajax({
+				url: '<?=base_url('landing/verifyDuplicateEst')?>',
+				type: 'POST',
+				dataType: 'json',
+				data: {contact_email: $(this).val()},
+			})
+			.done(function(data) {
+				if(data.result){
+					$('#createEstablishmentForm').validate().showErrors({
+					  "contact_email": "This Email Address is already in use, Please use a different Email Address. or you can login using your email address."
+					});
+					$('#btn_next_basic').addClass('disabled')
+				}else{
+					$('#btn_next_basic').removeClass('disabled')
+				}
+				console.log("success");
+			})
+			.fail(function() {
+				console.log("error");
+			})
+			.always(function() {
+				console.log("complete");
+			});
+		}
 	})
 	$('#btn_send_otp').on('click',function(){
 		$('#btn_send_otp').prop('disabled',true);

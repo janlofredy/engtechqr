@@ -141,6 +141,7 @@ class Landing extends MY_Controller {
 	public function verifyOTPEst(){
 		$otp = $this->input->post('otp');
 		$userid = $this->input->post('user_id');
+		$data = [];
 		$this->load->model('otp');
 		$this->load->model('establishment_info');
 		$qrin = new Establishment_info;
@@ -334,6 +335,13 @@ class Landing extends MY_Controller {
 		$this->load->model('individual_info');
 		$where = $this->input->post();
 		$id = new Individual_info;
+		echo json_encode(['result'=>$id->getBy($where)]);
+	}
+
+	public function verifyDuplicateEst(){
+		$this->load->model('establishment_info');
+		$where = $this->input->post();
+		$id = new Establishment_info;
 		echo json_encode(['result'=>$id->getBy($where)]);
 	}
 

@@ -29,7 +29,7 @@ class Establishment extends MY_Controller {
 		$endDate = date($this->input->post('time_out'));
 		$this->load->model('logs');
 		$logMod = new Logs;
-		echo json_encode( ['data'=>$logMod->getLogsBy(['concat(individual_info.first_name," ", individual_info.middle_name," ",individual_info.last_name) as name','time_in','time_out'], [ 'establishment_id' => $eid , 'time_out >=' => $startDate, 'time_in <=' => $endDate ])] );
+		echo json_encode( ['data'=>$logMod->getLogsBy(['concat(individual_info.first_name," ", individual_info.middle_name," ",individual_info.last_name) as name','time_in','time_out'], [ 'establishment_id' => $eid , 'time_out' => $startDate, 'time_in' => $endDate ])] );
 	}
 
 }
