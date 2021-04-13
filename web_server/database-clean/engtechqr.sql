@@ -11,7 +11,7 @@
  Target Server Version : 100411
  File Encoding         : 65001
 
- Date: 19/02/2021 10:11:25
+ Date: 12/04/2021 12:01:11
 */
 
 SET NAMES utf8mb4;
@@ -24,6 +24,7 @@ DROP TABLE IF EXISTS `establishment_info`;
 CREATE TABLE `establishment_info`  (
   `establishment_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
+  `qr_info` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `establishment_name` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `establishment_type` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `country` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
@@ -36,14 +37,15 @@ CREATE TABLE `establishment_info`  (
   `contact_last_name` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `contact_mobile_number` varchar(15) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `contact_email` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `qr_info` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  `verified` int(1) NULL DEFAULT NULL,
   `date_created` datetime(0) NULL DEFAULT NULL,
   `date_updated` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`establishment_id`) USING BTREE,
   UNIQUE INDEX `qr_info`(`qr_info`) USING BTREE,
+  UNIQUE INDEX `contact_email`(`contact_email`) USING BTREE,
   INDEX `establishment_info_ibfk_1`(`user_id`) USING BTREE,
   CONSTRAINT `establishment_info_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for individual_info
@@ -52,10 +54,11 @@ DROP TABLE IF EXISTS `individual_info`;
 CREATE TABLE `individual_info`  (
   `individual_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NULL DEFAULT NULL,
+  `qr_info` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `first_name` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `middle_name` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `last_name` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `suffix` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  `suffix` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '',
   `gender` varchar(25) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `date_of_birth` date NULL DEFAULT NULL,
   `mobile_number` varchar(15) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
@@ -69,14 +72,15 @@ CREATE TABLE `individual_info`  (
   `face_image` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `id_image` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `face_id_image` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `qr_info` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `date_created` datetime(0) NULL DEFAULT NULL,
-  `date_updated` datetime(0) NULL DEFAULT NULL,
+  `verified` int(1) NULL DEFAULT NULL,
+  `date_created` datetime(0) NULL DEFAULT current_timestamp(0),
+  `date_updated` datetime(0) NULL DEFAULT current_timestamp(0),
   PRIMARY KEY (`individual_id`) USING BTREE,
   UNIQUE INDEX `qr_info`(`qr_info`) USING BTREE,
+  UNIQUE INDEX `email_address`(`email_address`) USING BTREE,
   INDEX `individual_info_ibfk_1`(`user_id`) USING BTREE,
   CONSTRAINT `individual_info_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 82 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for logs
@@ -92,10 +96,8 @@ CREATE TABLE `logs`  (
   `date_updated` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`log_id`) USING BTREE,
   INDEX `establishment_id`(`establishment_id`) USING BTREE,
-  INDEX `individual_id`(`individual_id`) USING BTREE,
-  CONSTRAINT `logs_ibfk_1` FOREIGN KEY (`establishment_id`) REFERENCES `establishment_info` (`establishment_id`) ON DELETE RESTRICT ON UPDATE CASCADE,
-  CONSTRAINT `logs_ibfk_2` FOREIGN KEY (`individual_id`) REFERENCES `individual_info` (`individual_id`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+  INDEX `individual_id`(`individual_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 45 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for otp
@@ -104,13 +106,14 @@ DROP TABLE IF EXISTS `otp`;
 CREATE TABLE `otp`  (
   `otp_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NULL DEFAULT NULL,
-  `otp` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  `otp` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `time` timestamp(0) NULL DEFAULT NULL,
-  `tries` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  `tries` int(11) NOT NULL DEFAULT 0,
+  `status` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `date_created` datetime(0) NULL DEFAULT NULL,
   `date_updated` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`otp_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 163 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for users
@@ -126,7 +129,7 @@ CREATE TABLE `users`  (
   `date_updated` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`user_id`) USING BTREE,
   UNIQUE INDEX `username`(`username`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 29 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Triggers structure for table establishment_info

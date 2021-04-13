@@ -5,10 +5,9 @@ class Establishment extends MY_Controller {
 
 	const cont = 'Establishment';
 
-
 	public function index()
 	{
-		$QR = "<center><img src=".base_url().'QRimages/'.$this->session->userdata('qr_info').'-Qrcode.png'."></center>";
+		$QR = "<center><img width='100%' src=".base_url().'QRimages/'.$this->session->userdata('qr_info').'-Qrcode.png'."></center>";
 		// echo $QR;
 		$this->load->view('template/header',['controller'=>$this::cont]);
 		$this->load->view('view_establishment',['qr'=>$QR,'profile'=>$this->session->userdata()]);
