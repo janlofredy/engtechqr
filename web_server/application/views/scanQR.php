@@ -126,6 +126,7 @@
 	function newGuestFound(qrMessage){
 		// html5QrcodeScanner2.clear();
 		// alert(qrMessage)
+		$('#reader2_stop_btn').trigger('click');
 		$.ajax({
 			url: '<?=base_url('web_api/getIndividual')?>',
 			type: 'POST',
@@ -137,26 +138,29 @@
 
 			// html5QrcodeScanner2.clear();
 
+			if(data==null){
+			    $('#guestStatus').html('<center>INVALID QR CODE</center>');
+			}else{
 
-			loadGuestInfo(data);
-			individualQR = data.qr_info;
-			$.ajax({
-				url: '<?=base_url('web_api/qrLog')?>',
-				type: 'POST',
-				dataType: 'json',
-				data: {qrInfoEst:establishmentQR, qrInfoInd: individualQR},
-			})
-			.done(async function(data2) {
-				console.log(data2)
-				individualQR=null;
-
-				$('#reader2_stop_btn').trigger('click')
-				$('#guestStatus').html('<center>'+data2.data.type+'</center>');
-				setTimeout(function(){
-					$('#guestStatus').html('');
-					$('#reader2_start_btn').trigger('click')
-				},5000);
-			})
+    			loadGuestInfo(data);
+    			individualQR = data.qr_info;
+    			$.ajax({
+    				url: '<?=base_url('web_api/qrLog')?>',
+    				type: 'POST',
+    				dataType: 'json',
+    				data: {qrInfoEst:establishmentQR, qrInfoInd: individualQR},
+    			})
+    			.done(async function(data2) {
+    				console.log(data2)
+    				individualQR=null;
+    
+    				$('#guestStatus').html('<center>'+data2.data.type+'</center>');
+    			})
+			}
+			setTimeout(function(){
+				$('#guestStatus').html('');
+				$('#reader2_start_btn').trigger('click')
+			},5000);
 		})
 	}
 	//END GUEST SCANNER

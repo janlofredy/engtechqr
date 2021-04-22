@@ -1,3 +1,8 @@
+<style type="text/css">
+	.error{
+		color:red;
+	}
+</style>
 <center>
 	<div class="row d-none d-md-flex d-lg-flex" style="position:relative">
 		<div class="col">
@@ -131,7 +136,7 @@
 						<div class="col-md-4">
 							<!-- Text input-->
 							<div class="form-group">
-								<label class="col control-label" for="city_municipality">City/Municipality*</label>
+								<label class="control-label" for="city_municipality">City/Municipality*</label>
 									<input id="city_municipality" name="city_municipality" type="text" placeholder="City/Municipality" class="form-control input-md" required>
 							</div>
 						</div>
@@ -214,6 +219,8 @@
 								</div>
 							</center>
 						</div>
+					</div>
+					<div class="row">
 						<div class="col">
 							<div class="container">
 								<div class="checkbox">

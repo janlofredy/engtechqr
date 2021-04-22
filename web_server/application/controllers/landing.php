@@ -7,19 +7,23 @@ class Landing extends MY_Controller {
 
 	public function index()	{
 		// echo $this::cont;
-		$modal['content'] = '<center>
-		    <a href="<?=base_url($controller.\'/\')?>" type="button" class="btn btn-primary">Login as User</a>
-		    <br><br>
-		    <a href="<?=base_url($controller.\'/\')?>" type="button" class="btn btn-primary">Login as Establishment</a>
-		<center>';
-		set_modal_title('Login As');
-		set_modal_content($modal);
+		
+		// set_modal_title('Login As');
+		// set_modal_content($modal);
 		// $this->load->view('template/header',['controller'=>$this::cont]);
 		// $this->load->view('template/addons/modal',$modal);
 		// $this->load->view('welcome_message');
 		// $this->load->view('template/footer');
-		$this->generateQr('b7c59c55c3b761a');
+		// $this->generateQr('b7c59c55c3b761a');
 		$this->load->view('home');
+	}
+
+	public function establishment(){
+		$this->load->view('establishment_home');
+	}
+
+	public function individual(){
+		$this->load->view('individual_home');
 	}
 
 	public function login_user(){

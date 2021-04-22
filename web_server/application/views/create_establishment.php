@@ -1,3 +1,8 @@
+<style type="text/css">
+	.error{
+		color:red;
+	}
+</style>
 <center>
 	<div class="row d-none d-md-flex d-lg-flex" style="position:relative">
 		<div class="col">

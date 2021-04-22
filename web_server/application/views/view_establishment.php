@@ -15,9 +15,9 @@ echo '</pre></center>';
 		<li class="nav-item">
 			<a class="nav-link" data-toggle="tab" href="#menu1">Logs</a>
 		</li>
-		<li class="nav-item">
+		<!-- <li class="nav-item">
 			<a class="nav-link" data-toggle="tab" href="#menu2">Account Information</a>
-		</li>
+		</li> -->
 	</ul>
 
 	<!-- Tab panes -->
@@ -40,7 +40,10 @@ echo '</pre></center>';
 										This is your Personal QR Code ID.
 										Please make sure you keep a copy of your ACLC QR ID.
 										<br>
-										You may screenshot, save it as image.
+										You may take a screenshot or save it as an image.
+										<br>
+										Check the saved image before proceeding, make sure the whole qr code is visible in the image saved.
+										If not, try to reload the webpage and download the image again. or take a screenshot.
 										<br>
 										For you to review your QR Code ID please login using your registered e-mail address.
 										<br>
@@ -177,7 +180,11 @@ echo '</pre></center>';
 
 		var logsTable = $('#logsTable').dataTable({
 	        // "serverSide": true,
+	        dom: 'Bflrtip',
 	        "processing": true,
+	        buttons: [
+				'excel'
+			],
 	        ajax : { 
 	        	'url' : '<?=base_url('establishment/getLogs')?>',
 	        	'type' : 'POST',

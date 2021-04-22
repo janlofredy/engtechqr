@@ -81,9 +81,12 @@ class Logs extends MY_Model {
 	public function getLogsBy($select,$where){
 		return $this->db
 			->where('establishment_id',$where['establishment_id'])
-			->where('time_in <=',$where['time_in'])
 			->group_start()
-			->where('time_out >=',$where['time_out'],FALSE)
+			->where('time_in <=',$where['time_in'])
+			->where('time_in >=',$where['time_out'])
+			->group_end()
+			->group_start()
+			->where('time_out <=',$where['time_in'])
 			->or_where('time_out is null',NULL,FALSE)
 			->group_end()
 			->select($select)

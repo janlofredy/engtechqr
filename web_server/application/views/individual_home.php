@@ -39,23 +39,12 @@
 				</a>
 			</div> 
 		</div>
-		<div class="row">
-			<!-- <legend style="color:white;">
-				Individual
-			</legend> -->
-			<!-- <div class="col ">
-				<a href="<?=base_url('web_scanner/')?>">
-					<img src="<?=base_url();?>/assets/image/qr.png" class="img-fluid">
-					<h3>Click QR Code to Scan</h3>
-				</a>
-			</div> -->
-		</div>
 		<div class="container">
 			<div class="row my-5 py-5" id="btns">
 				<!-- <legend style="color:white;">
 					Establishment
 				</legend> -->
-				<!-- <div class="col" >
+				<div class="col" >
 					<a href="<?=base_url('landing/create_user')?>">
 						<img src="<?=base_url();?>/assets/image/userReg.png" class="img-fluid">
 						<h3>Personal User<br>Registration</h3>
@@ -65,32 +54,6 @@
 					<a href="<?=base_url('landing/login_user')?>">
 						<img src="<?=base_url();?>/assets/image/userLogin.png" class="img-fluid">
 						<h3>Personal<br>User Log-in</h3>
-					</a>
-				</div>
-				<div class="col" >
-					<a href="<?=base_url('landing/create_establishment')?>">
-						<img src="<?=base_url();?>/assets/image/estReg.png" class="img-fluid">
-						<h3>Establishment<br>Registration</h3>
-					</a>
-				</div>
-
-				<div class="col" >
-					<a href="<?=base_url('landing/login_establishment')?>">
-						<img src="<?=base_url();?>/assets/image/estLogin.png" class="img-fluid">
-						<h3>Establishment<br>Log-in</h3>
-					</a>
-				</div> -->
-				<div class="col" >
-					<a href="<?=base_url('landing/establishment')?>">
-						<img src="<?=base_url();?>/assets/image/estReg.png" class="img-fluid">
-						<h3>Establishment</h3>
-					</a>
-				</div>
-
-				<div class="col" >
-					<a href="<?=base_url('landing/individual')?>">
-						<img src="<?=base_url();?>/assets/image/userLogin.png" class="img-fluid">
-						<h3>Individual</h3>
 					</a>
 				</div>
 			</div>
