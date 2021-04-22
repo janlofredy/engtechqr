@@ -39,6 +39,7 @@ class Logs extends MY_Model {
 	public $unique = [];
 
 	public function logNow($estID,$indID){
+	    date_default_timezone_set("Asia/Manila");
 		// $this->db->query('
 		// 	IF NOT EXISTS (Select * from `logs` where establishment_id = 1 and individual_id = 24 and time_out is NULL) THEN
 		// 		UPDATE `logs` SET time_out=NOW() WHERE  establishment_id = 1 and individual_id = 24 and time_out is NULL;
@@ -79,6 +80,7 @@ class Logs extends MY_Model {
 	}
 
 	public function getLogsBy($select,$where){
+	    date_default_timezone_set("Asia/Manila");
 		return $this->db
 			->where('establishment_id',$where['establishment_id'])
 			->group_start()
