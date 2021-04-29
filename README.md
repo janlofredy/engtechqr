@@ -1,4 +1,4 @@
 # engtechqr
 
 
-Engtech Global Solutions QR code login for contact tracing
+Engtech Global Solutions QR code log
