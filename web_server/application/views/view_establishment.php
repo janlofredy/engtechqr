@@ -67,9 +67,10 @@ echo '</pre></center>';
 													<div class="row">
 														<div class="col">
 															<?php if (isset($qr)) {
-																echo $qr;
+																echo '<img id="qrimg" width="100%" src="'.base_url('establishment/getQR').'" alt="">';
+																// echo $qr;
 															}else {
-																echo '<img src="'.base_url().'assets/image/logo.png" alt="">';
+																echo 'QR Not Generated!';
 															}?>
 															<h6><b>
 															<?php if ( $this->session->userdata('qr_info') != null  ) {
@@ -160,22 +161,25 @@ echo '</pre></center>';
 		var elem = document.getElementById('saveImageDIV');
 		var getCanvas;
 		// var logsTable;
-		html2canvas(elem,{
-			Logging: false, // log switch to view the internal execution process of html2canvas
-			width:  elem.clientWidth , // DOM original width
-			height: elem.clientHeight,
-			scrollY: -window.scrollY, 
-			scrollX: 0,
-			Usecors: true 
-		}).then((canvas) => {
-			// var imagedata = canvas.toDataURL('image/png');
-			// var imgdata = imagedata.replace(/^data:image\/(png|jpg);base64,/, "");
+		$('#qrimg').attr('src',"<?php echo base_url('establishment/getQR'); ?>" ).on("load", function() {
+			
+			html2canvas(elem,{
+				Logging: false, // log switch to view the internal execution process of html2canvas
+				width:  elem.clientWidth , // DOM original width
+				height: elem.clientHeight,
+				scrollY: -window.scrollY, 
+				scrollX: 0,
+				Usecors: true 
+			}).then((canvas) => {
+				// var imagedata = canvas.toDataURL('image/png');
+				// var imgdata = imagedata.replace(/^data:image\/(png|jpg);base64,/, "");
 
-			var imagedata =  canvas.toDataURL("image/png"); 
-						
-			var imgdata = imagedata.replace(/^data:image\/png/, "data:application/octet-stream"); 
-			$('#saveImage').attr("download", "QRCODE.png").attr("href", imgdata);
-			$('#saveImage').trigger('click');
+				var imagedata =  canvas.toDataURL("image/png"); 
+							
+				var imgdata = imagedata.replace(/^data:image\/png/, "data:application/octet-stream"); 
+				$('#saveImage').attr("download", "QRCODE.png").attr("href", imgdata);
+				$('#saveImage').trigger('click');
+			})
 		})
 
 		var logsTable = $('#logsTable').dataTable({

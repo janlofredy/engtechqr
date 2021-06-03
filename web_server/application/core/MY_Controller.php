@@ -49,7 +49,7 @@ class MY_Controller extends CI_Controller {
 			$folder = $SERVERFILEPATH;
 			$file_name1 = $text1."-Qrcode.png";
 			$file_name = $folder.$file_name1;
-			QRcode::png($text,$file_name,QR_ECLEVEL_H,10);		
+			QRcode::png($text,false,QR_ECLEVEL_H,10);		
 			return "<center><img src=".base_url().'QRimages/'.$file_name1."></center>";
 		}else{
 			return 'No Text Entered';

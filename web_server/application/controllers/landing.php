@@ -58,7 +58,7 @@ class Landing extends MY_Controller {
 		$otpModel = new Otp;
 		$otp = $otpModel->newOTP($id);
 		$message = '<html>Your OTP is <b>"'.$otp.'"</b>.<br> Please do not share with others.<br>This can only be used within 5 mins.<br><br> This is a computer generated message. <b>Please do not reply.</b></html>';
-		$email = $this->sendEmail('janlofredy@gmail.com','Jose Janlofre',$email,'Engtech QR OTP',$message);
+		$email = $this->sendEmail('qrcode@aclcbutuan.edu.ph','ACLC College of Butuan - QR Code',$email,'Engtech QR OTP',$message);
 		return $email;
 		// if($email){
 		// 	return 'success';
@@ -286,7 +286,6 @@ class Landing extends MY_Controller {
 			$indiv->updateById($qrInfo,['face_image'=>$a,'id_image'=>$b,'face_id_image'=>$c]);
 			$qrin = new Individual_info;
 			$qr_info = $qrin->getQRInfo($qrInfo);
-			$this->generateQr($qr_info);
 			$email = $data['email_address'];
 			$num = $this->sendOTPtoEmail( $usrID, $email );
 			// echo($num);
@@ -319,7 +318,6 @@ class Landing extends MY_Controller {
 		$establishmentId = $establishment->insertNew($data);
 		if($establishmentId){
 			$qrInfo = $establishment->getQRInfo($establishmentId);
-			$this->generateQr($qrInfo);
 			$email= $data['contact_email'];
 			$this->sendOTPtoEmail($user_id, $email);
 			$this->db->trans_complete();
